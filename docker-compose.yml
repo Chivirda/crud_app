@@ -13,21 +13,13 @@ services:
       - appnet
 
   php:
-    image: php:8.2-fpm-alpine
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: crud_php
     volumes:
       - ./app:/var/www/html
     working_dir: /var/www/html
-    networks:
-      - appnet
-
-  composer:
-    image: composer:latest
-    container_name: crud_composer
-    volumes:
-      - ./app:/app
-    working_dir: /app
-    entrypoint: ["composer"]
     networks:
       - appnet
 
