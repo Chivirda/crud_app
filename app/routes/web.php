@@ -1,10 +1,12 @@
 <?php
 
+use Serg\Crudapp\Router\Route;
+
 return [
-    '/' => function (): void {
-        echo '<h1>Home</h1>';
-    },
-    '/guest' => function (): void {
-        echo '<h1>Hello, guest</h1>';
-    },
+    Route::get('/', function (): void {
+        include_once APP_PATH . '/views/pages/home.php';
+    }),
+    Route::get('/guest', function (): void {
+        include_once APP_PATH . '/views/pages/guest.php';
+    })
 ];
