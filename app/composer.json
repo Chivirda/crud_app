@@ -1,0 +1,23 @@
+{
+    "name": "serg/crudapp",
+    "description": "Simple CRUD app",
+    "type": "project",
+    "require-dev": {
+        "symfony/var-dumper": "^7.2",
+        "laravel/pint": "^1.22"
+    },
+    "autoload": {
+        "psr-4": {
+            "Serg\\Crudapp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sergey Chivirda"
+        }
+    ],
+    "scripts": {
+        "pint": "pint"
+    },
+    "require": {}
+}

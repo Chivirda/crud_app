@@ -1,0 +1,7 @@
+{
+    "preset": "psr12",
+    "rules": {
+        "void_return": true,
+        "return_type_declaration": true
+    }
+}
