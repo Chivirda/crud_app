@@ -1,6 +1,6 @@
 <?php
 
-namespace Serg\Crudapp\Router;
+namespace App\Router;
 
 class Route
 {

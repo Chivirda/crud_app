@@ -1,8 +1,8 @@
 <?php
 
-namespace Serg\Crudapp;
+namespace App;
 
-use Serg\Crudapp\Router\Router;
+use App\Router\Router;
 
 class App
 {

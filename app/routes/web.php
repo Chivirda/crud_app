@@ -1,12 +1,13 @@
 <?php
 
-use Serg\Crudapp\Router\Route;
+use App\Controller\GuestController;
+use App\Controller\HomeController;
+use App\Router\Route;
 
 return [
-    Route::get('/', function (): void {
-        include_once APP_PATH . '/views/pages/home.php';
+    Route::get('/', [HomeController::class, 'index']),
+    Route::get('/guest', [GuestController::class, 'index']),
+    Route::get('/test', function () {
+        echo 'test';
     }),
-    Route::get('/guest', function (): void {
-        include_once APP_PATH . '/views/pages/guest.php';
-    })
 ];

@@ -1,6 +1,6 @@
 <?php
 
-namespace Serg\Crudapp\Router;
+namespace App\Router;
 
 class Router
 {
@@ -21,7 +21,14 @@ class Router
             $this->notFound();
         }
 
-        $route->action()();
+        if (is_array($route->action())) {
+            [$controller, $action] = $route->action();
+            $controller = new $controller();
+            call_user_func([$controller, $action]);
+        } else {
+            call_user_func($route->action());
+        }
+
     }
 
     /**
