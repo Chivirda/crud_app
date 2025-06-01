@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Планировщик задач</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+        .sidebar {
+            min-height: calc(100vh - 56px);
+            background-color: #f8f9fa;
+        }
+        .task-item {
+            border-left: 4px solid #007bff;
+        }
+        .task-overdue {
+            border-left-color: #dc3545;
+        }
+        .task-today {
+            border-left-color: #ffc107;
+        }
+        .task-completed {
+            opacity: 0.6;
+        }
+        .nav-pills .nav-link.active {
+            background-color: #007bff;
+        }
+        .error {
+            color: #dc3545;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Навигация для демонстрации -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="#"><i class="fas fa-tasks me-2"></i>Планировщик задач</a>
+        <div class="navbar-nav ms-auto">
+            <button class="btn btn-outline-light btn-sm me-2" onclick="showPage('index')">Гостевая</button>
+            <button class="btn btn-outline-light btn-sm me-2" onclick="showPage('register')">Регистрация</button>
+            <button class="btn btn-outline-light btn-sm me-2" onclick="showPage('login')">Вход</button>
+            <button class="btn btn-outline-light btn-sm me-2" onclick="showPage('dashboard')">Главная</button>
+            <button class="btn btn-outline-light btn-sm me-2" onclick="showPage('add-project')">Добавить проект</button>
+            <button class="btn btn-outline-light btn-sm" onclick="showPage('add-task')">Добавить задачу</button>
+        </div>
+    </div>
+</nav>
+
+<!-- 1. Гостевая страница -->
+<div id="index" class="page active">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <div class="hero-section py-5">
+                    <h1 class="display-4 mb-4"><i class="fas fa-tasks text-primary"></i> Планировщик задач</h1>
+                    <p class="lead mb-5">
+                        Веб-приложение для удобного ведения списка дел. Сервис помогает пользователям не забывать о предстоящих важных событиях и задачах. После создания аккаунта, пользователь может начать вносить свои дела, деля их по проектам и указывая сроки.
+                    </p>
+                    <div class="d-grid gap-2 d-md-block">
+                        <button class="btn btn-primary btn-lg" onclick="showPage('register')">
+                            <i class="fas fa-user-plus me-2"></i>Зарегистрироваться
+                        </button>
+                        <button class="btn btn-outline-primary btn-lg" onclick="showPage('login')">
+                            <i class="fas fa-sign-in-alt me-2"></i>Войти
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 2. Страница регистрации -->
+<div id="register" class="page">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0"><i class="fas fa-user-plus me-2"></i>Регистрация аккаунта</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="/register">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">E-mail *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                                <div class="error" id="email-error"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Пароль *</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                                <div class="error" id="password-error"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Имя *</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                                <div class="error" id="name-error"></div>
+                            </div>
+                            <div class="error mb-3" id="form-error" style="display: none;">
+                                Пожалуйста, исправьте ошибки в форме
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-user-plus me-2"></i>Зарегистрироваться
+                                </button>
+                            </div>
+                        </form>
+                        <div class="text-center mt-3">
+                            <a href="#" onclick="showPage('login')" class="text-decoration-none">
+                                Уже есть аккаунт? Войти
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 3. Страница авторизации -->
+<div id="login" class="page">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0"><i class="fas fa-sign-in-alt me-2"></i>Авторизация</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="/login">
+                            <div class="mb-3">
+                                <label for="login-email" class="form-label">E-mail *</label>
+                                <input type="email" class="form-control" id="login-email" name="email" required>
+                                <div class="error" id="login-email-error"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="login-password" class="form-label">Пароль *</label>
+                                <input type="password" class="form-control" id="login-password" name="password" required>
+                                <div class="error" id="login-password-error"></div>
+                            </div>
+                            <div class="error mb-3" id="login-form-error" style="display: none;">
+                                Вы ввели неверный email/пароль
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Войти
+                                </button>
+                            </div>
+                        </form>
+                        <div class="text-center mt-3">
+                            <a href="#" onclick="showPage('register')" class="text-decoration-none">
+                                Нет аккаунта? Зарегистрироваться
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 4. Главная страница -->
+<div id="dashboard" class="page">
+    <!-- Верхняя панель -->
+    <div class="bg-white border-bottom">
+        <div class="container-fluid py-2">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="fas fa-tasks text-primary me-2"></i>Мои задачи</h4>
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user me-2"></i>Иван Иванов
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" onclick="showPage('index')">
+                            <i class="fas fa-sign-out-alt me-2"></i>Выйти
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Левая колонка - Проекты (1/3) -->
+            <div class="col-md-4 sidebar p-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-folder me-2"></i>Проекты</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list-group-flush">
+                            <a href="#" class="list-group-item list-group-item-action active">
+                                <i class="fas fa-inbox me-2"></i>Входящие <span class="badge bg-primary rounded-pill">5</span>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="fas fa-briefcase me-2"></i>Работа <span class="badge bg-secondary rounded-pill">3</span>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="fas fa-home me-2"></i>Личные дела <span class="badge bg-secondary rounded-pill">2</span>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="fas fa-graduation-cap me-2"></i>Обучение <span class="badge bg-secondary rounded-pill">1</span>
+                            </a>
+                        </div>
+                        <div class="mt-3">
+                            <button class="btn btn-outline-primary w-100" onclick="showPage('add-project')">
+                                <i class="fas fa-plus me-2"></i>Добавить проект
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Правая колонка - Задачи (2/3) -->
+            <div class="col-md-8 p-4">
+                <!-- Поиск -->
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <form method="GET" action="/search">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="search" placeholder="Поиск задачи...">
+                                <button class="btn btn-outline-secondary" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button class="btn btn-primary" onclick="showPage('add-task')">
+                            <i class="fas fa-plus me-2"></i>Добавить задачу
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Фильтры -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#"><i class="fas fa-list me-2"></i>Все задачи</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><i class="fas fa-calendar-day me-2"></i>Повестка дня</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><i class="fas fa-calendar-plus me-2"></i>Завтра</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-danger" href="#"><i class="fas fa-exclamation-triangle me-2"></i>Просроченные</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Блок задач -->
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Входящие</h5>
+                        <a href="#" class="text-decoration-none">Показать выполненные</a>
+                    </div>
+                    <div class="card-body">
+                        <!-- Задача 1 -->
+                        <div class="task-item border rounded p-3 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="form-check me-3">
+                                    <input class="form-check-input" type="checkbox" id="task1">
+                                </div>
+                                <div class="flex-grow-1">
+                                    <label class="form-check-label fw-bold" for="task1" style="cursor: pointer;">
+                                        Подготовить презентацию для клиента
+                                    </label>
+                                </div>
+                                <div class="task-meta d-flex align-items-center">
+                                    <i class="fas fa-paperclip text-muted me-2" title="Есть вложение"></i>
+                                    <span class="badge bg-warning text-dark">Сегодня</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Задача 2 -->
+                        <div class="task-item task-overdue border rounded p-3 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="form-check me-3">
+                                    <input class="form-check-input" type="checkbox" id="task2">
+                                </div>
+                                <div class="flex-grow-1">
+                                    <label class="form-check-label fw-bold" for="task2" style="cursor: pointer;">
+                                        Отправить отчет по проекту
+                                    </label>
+                                </div>
+                                <div class="task-meta">
+                                    <span class="badge bg-danger">Просрочено</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Задача 3 -->
+                        <div class="task-item border rounded p-3 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="form-check me-3">
+                                    <input class="form-check-input" type="checkbox" id="task3">
+                                </div>
+                                <div class="flex-grow-1">
+                                    <label class="form-check-label fw-bold" for="task3" style="cursor: pointer;">
+                                        Провести встречу с командой
+                                    </label>
+                                </div>
+                                <div class="task-meta">
+                                    <span class="badge bg-info">Завтра</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Выполненная задача -->
+                        <div class="task-item task-completed border rounded p-3 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="form-check me-3">
+                                    <input class="form-check-input" type="checkbox" id="task4" checked>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <label class="form-check-label text-decoration-line-through" for="task4" style="cursor: pointer;">
+                                        Купить продукты
+                                    </label>
+                                </div>
+                                <div class="task-meta">
+                                    <span class="badge bg-success">Выполнено</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 5. Добавление проекта -->
+<div id="add-project" class="page">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h3 class="card-title mb-0"><i class="fas fa-folder-plus me-2"></i>Добавить проект</h3>
+                        <button class="btn btn-outline-light btn-sm" onclick="showPage('dashboard')">
+                            <i class="fas fa-arrow-left"></i> Назад
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="/add-project">
+                            <div class="mb-3">
+                                <label for="project-name" class="form-label">Название проекта *</label>
+                                <input type="text" class="form-control" id="project-name" name="name" placeholder="Введите название проекта" required>
+                                <div class="error" id="project-name-error"></div>
+                            </div>
+                            <div class="error mb-3" id="project-form-error" style="display: none;">
+                                Пожалуйста, исправьте ошибки в форме
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-plus me-2"></i>Создать проект
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 6. Добавление задачи -->
+<div id="add-task" class="page">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h3 class="card-title mb-0"><i class="fas fa-plus me-2"></i>Добавить задачу</h3>
+                        <button class="btn btn-outline-light btn-sm" onclick="showPage('dashboard')">
+                            <i class="fas fa-arrow-left"></i> Назад
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="/add-task" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-8 mb-3">
+                                    <label for="task-name" class="form-label">Название *</label>
+                                    <input type="text" class="form-control" id="task-name" name="name" placeholder="Введите название задачи" required>
+                                    <div class="error" id="task-name-error"></div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="task-project" class="form-label">Проект *</label>
+                                    <select class="form-select" id="task-project" name="project_id" required>
+                                        <option value="">Выберите проект</option>
+                                        <option value="1">Входящие</option>
+                                        <option value="2">Работа</option>
+                                        <option value="3">Личные дела</option>
+                                        <option value="4">Обучение</option>
+                                    </select>
+                                    <div class="error" id="task-project-error"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="task-date" class="form-label">Срок выполнения</label>
+                                    <input type="date" class="form-control" id="task-date" name="due_date">
+                                    <div class="form-text">Формат: ГГГГ-ММ-ДД</div>
+                                    <div class="error" id="task-date-error"></div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="task-file" class="form-label">Файл</label>
+                                    <input type="file" class="form-control" id="task-file" name="file">
+                                    <div class="form-text">Необязательное поле</div>
+                                    <div class="error" id="task-file-error"></div>
+                                </div>
+                            </div>
+                            <div class="error mb-3" id="task-form-error" style="display: none;">
+                                Пожалуйста, исправьте ошибки в форме
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-plus me-2"></i>Добавить
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Функция для переключения между страницами (только для демонстрации)
+    function showPage(pageId) {
+        // Скрыть все страницы
+        const pages = document.querySelectorAll('.page');
+        pages.forEach(page => page.classList.remove('active'));
+        
+        // Показать выбранную страницу
+        document.getElementById(pageId).classList.add('active');
+    }
+
+    // Демонстрация интерактивности
+    document.addEventListener('DOMContentLoaded', function() {
+        // Обработка чекбоксов задач
+        const taskCheckboxes = document.querySelectorAll('input[type="checkbox"][id^="task"]');
+        taskCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const taskItem = this.closest('.task-item');
+                const label = taskItem.querySelector('label');
+                
+                if (this.checked) {
+                    taskItem.classList.add('task-completed');
+                    label.classList.add('text-decoration-line-through');
+                } else {
+                    taskItem.classList.remove('task-completed');
+                    label.classList.remove('text-decoration-line-through');
+                }
+            });
+        });
+
+        // Демонстрация валидации форм
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // Предотвращаем отправку для демонстрации
+                
+                // Простая демонстрация ошибок
+                const formId = form.closest('.page').id;
+                if (formId === 'register') {
+                    // Показать пример ошибки валидации
+                    document.getElementById('email-error').textContent = 'Этот email уже используется';
+                    document.getElementById('form-error').style.display = 'block';
+                } else {
+                    alert('Форма отправлена! (В реальном приложении здесь будет обработка на сервере)');
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
