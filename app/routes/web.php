@@ -2,9 +2,13 @@
 
 use App\Controllers\GuestController;
 use App\Controllers\HomeController;
+use App\Controllers\ProjectController;
 use App\Kernel\Router\Route;
 
 return [
   Route::get('/', [HomeController::class, 'index']),
   Route::get('/guest', [GuestController::class, 'index']),
+
+  Route::get('/projects/add', [ProjectController::class,'add']),
+  Route::post('/projects/add', [ProjectController::class,'store']),
 ];

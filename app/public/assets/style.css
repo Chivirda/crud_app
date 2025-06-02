@@ -4,6 +4,6 @@
   box-sizing: border-box;
  }
 
-h1 {
+h1, form {
   padding: 20px;
 }
