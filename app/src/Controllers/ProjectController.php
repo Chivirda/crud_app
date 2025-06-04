@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Kernel\Controller\Controller;
+use App\Kernel\Validator\Validator;
 
 class ProjectController extends Controller
 {
@@ -13,6 +14,18 @@ class ProjectController extends Controller
 
     public function store(): void
     {
-        dd($this->request()->input("name"));
+        $validation = $this->request()->validate([
+            "name"=> [
+                "required",
+                "min:3",
+                "max:12"
+            ]
+        ]);
+
+        if (! $validation) {
+            $this->redirect("/projects/add");
+        }
+
+        dd('Success');
     }
 }
