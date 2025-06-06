@@ -2,7 +2,7 @@
 
 namespace App\Kernel\Validator;
 
-class Validator
+class Validator implements ValidatorInterface
 {
     private array $errors = [];
     private array $data = [];
@@ -20,7 +20,7 @@ class Validator
                 $ruleName = $rule[0];
                 $ruleValue = $rule[1] ?? null;
 
-                $error = $this->validateField($field, $ruleName, $ruleValue); 
+                $error = $this->validateField($field, $ruleName, $ruleValue);
 
                 if ($error) {
                     $this->errors[$field][] = $error;
