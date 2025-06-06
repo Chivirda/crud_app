@@ -4,6 +4,7 @@ namespace App\Kernel\Controller;
 
 use App\Kernel\Http\Redirect;
 use App\Kernel\Http\Request;
+use App\Kernel\Session\Session;
 use App\Kernel\View\View;
 
 abstract class Controller
@@ -11,6 +12,17 @@ abstract class Controller
   private View $view;
   private Request $request;
   private Redirect $redirect;
+  private Session $session;
+
+  public function session(): Session
+  {
+    return $this->session;
+  }
+
+  public function setSession(Session $session): void
+  {
+    $this->session = $session;
+  }
 
   public function view(string $name): void
   {
@@ -26,7 +38,7 @@ abstract class Controller
   {
     return $this->request;
   }
-  
+
   public function setRequest(Request $request): void
   {
     $this->request = $request;
@@ -41,5 +53,4 @@ abstract class Controller
   {
     $this->redirect->to($uri);
   }
-
 }
