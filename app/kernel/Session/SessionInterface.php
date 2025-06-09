@@ -4,10 +4,10 @@ namespace App\Kernel\Session;
 
 interface SessionInterface
 {
-    public function set(string $key, mixed $value): void;
-    public function get(string $key, mixed $default = null): mixed;
-    public function getFlash(string $key, mixed $default = null): mixed;
-    public function has(string $key): bool;
-    public function delete(string $key): void;
+    public function set($key, $value): void;
+    public function get($key, $default = null): mixed;
+    public function getFlash($key, $default = null): array;
+    public function has($key): bool;
+    public function remove($key): void;
     public function destroy(): void;
 }

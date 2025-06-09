@@ -29,6 +29,10 @@ class ProjectController extends Controller
             $this->redirect("/projects/add");
         }
 
-        dd('Success');
+        $id = $this->db()->insert('projects', [
+            'name'=> $this->request()->input('name'),
+        ]);
+
+        dd("Project created with id: $id");
     }
 }

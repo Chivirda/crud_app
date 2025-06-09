@@ -7,3 +7,13 @@
 h1, form {
   padding: 20px;
 }
+
+.register-form {
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}

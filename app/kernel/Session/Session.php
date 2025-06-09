@@ -9,30 +9,30 @@ class Session implements SessionInterface
         session_start();
     }
 
-    public function set(string $key, mixed $value): void
+    public function set($key, $value): void
     {
         $_SESSION[$key] = $value;
     }
 
-    public function get(string $key, mixed $default = null): mixed
+    public function get($key, $default = null): mixed
     {
         return $_SESSION[$key] ?? $default;
     }
 
-    public function getFlash(string $key, mixed $default = null): mixed
+    public function getFlash($key, $default = null): array
     {
         $value = $this->get($key, $default);
-        $this->delete($key);
+        $this->remove($key);
 
         return $value;
     }
 
-    public function has(string $key): bool
+    public function has($key): bool
     {
         return isset($_SESSION[$key]);
     }
 
-    public function delete(string $key): void
+    public function remove($key): void
     {
         unset($_SESSION[$key]);
     }

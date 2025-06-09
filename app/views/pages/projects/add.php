@@ -1,7 +1,7 @@
 <?php
-
 /**
  * @var App\Kernel\View\View $view;
+ * @var App\Kernel\Session\Session $session;
  * @var App\Kernel\Session\Session $session;
  */
 
@@ -12,19 +12,14 @@
 <h1>Add project</h1>
 
 <form action="/projects/add" method="post">
-    <div class="">
-        <input type="text" name="name">
+    <div class=""><input type="text" name="name"></div>
+    <ul>
         <?php if ($session->has('name')): ?>
-            <ul>
-                <?php foreach ($session->getFlash('name') as $error): ?>
-                    <li style="color: red;">
-                        <?= $error ?>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-
+            <?php foreach ($session->getFlash('name') as $name): ?>
+                <li style="color: red;"><?= $name ?></li>
+            <?php endforeach; ?>
         <?php endif; ?>
-    </div>
+    </ul>
     <div class=""><button type="submit">Add project</button></div>
 </form>
 
