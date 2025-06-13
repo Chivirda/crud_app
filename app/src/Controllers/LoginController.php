@@ -16,8 +16,36 @@ class LoginController extends Controller
         $email = $this->request()->input("email");
         $password = $this->request()->input("password");
 
+        $userId = $this->db()->first("users", ["email" => $email]);
+
+        if (! $userId) {
+            $this->session()->set("email", ["Пользователь с email $email не зарегистрирован"]);
+            $this->redirect("/login");
+        }
+
+        $validation = $this->request()->validate([
+            "email" => [
+                "required",
+                "email"
+            ],
+            "password" => [
+                "min:4"
+            ]
+        ]);
+
+        if (! $validation) {
+            foreach ($this->request()->errors() as $field => $error) {
+                $this->session()->set($field, $error);
+            }
+
+            $this->redirect("/login");
+        }
+
         if ($this->auth()->attempt($email, $password)) {
             $this->redirect("/");
+        } else {
+            $this->session()->set("password", ["Пароль указан неверно"]);
+            $this->redirect("/login");
         }
 
     }

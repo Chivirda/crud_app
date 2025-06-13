@@ -8,34 +8,50 @@
 
 <?php $view->component('start'); ?>
 
-<h1>Login</h1>
-
-<form action="/login" method="post" class="register-form">
-    <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email">
-        <?php if ($session->has("email")): ?>
-            <ul>
-                <?php foreach ($session->getFlash("email") as $error): ?>
-                    <li><?= $error; ?></li>
-                <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
+<div id="login" class="page">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0"><i class="fas fa-sign-in-alt me-2"></i>Авторизация</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="/login">
+                            <div class="mb-3">
+                                <label for="login-email" class="form-label">E-mail *</label>
+                                <input type="email" class="form-control" id="login-email" name="email" required>
+                                <?php if ($session->has('email')): ?>
+                                    <?php foreach ($session->getFlash('email') as $error): ?>
+                                    <div class="error" id="login-email-error"><?= $error ?></div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
+                            <div class="mb-3">
+                                <label for="login-password" class="form-label">Пароль *</label>
+                                <input type="password" class="form-control" id="login-password" name="password" required>
+                                <?php if ($session->has('password')): ?>
+                                    <?php foreach ($session->getFlash('password') as $error): ?>
+                                    <div class="error" id="login-password-error"><?= $error ?></div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Войти
+                                </button>
+                            </div>
+                        </form>
+                        <div class="text-center mt-3">
+                            <a href="/register" class="text-decoration-none">
+                                Нет аккаунта? Зарегистрироваться
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password">
-        <?php if ($session->has("password")): ?>
-            <ul>
-                <?php foreach ($session->getFlash("password") as $error): ?>
-                    <li><?= $error; ?></li>
-                <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
-    </div>
-    <div class="form-group">
-        <button type="submit">Login</button>
-    </div>
-</form>
+</div>
 
 <?php $view->component('end'); ?>

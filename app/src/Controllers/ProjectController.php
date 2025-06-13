@@ -17,7 +17,6 @@ class ProjectController extends Controller
 
         $filePath = $file->move('projects');
 
-        dd($this->storage()->url($filePath));
         $validation = $this->request()->validate([
             "name" => [
                 "required",

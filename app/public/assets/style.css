@@ -1,19 +1,33 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
- }
-
-h1, form {
-  padding: 20px;
+.sidebar {
+  min-height: calc(100vh - 56px);
+  background-color: #f8f9fa;
 }
 
-.register-form {
-  margin: 0 auto;
-  max-width: 500px;
+.task-item {
+  border-left: 4px solid #007bff;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
+.task-overdue {
+  border-left-color: #dc3545;
+}
+
+.task-today {
+  border-left-color: #ffc107;
+}
+
+.task-completed {
+  opacity: 0.6;
+}
+
+.nav-pills .nav-link.active {
+  background-color: #007bff;
+}
+
+.error {
+  color: #dc3545;
+  font-size: 0.875rem;
+}
+
+.success {
+  color: green;
 }
