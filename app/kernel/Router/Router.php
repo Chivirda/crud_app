@@ -2,10 +2,12 @@
 
 namespace App\Kernel\Router;
 
+use App\Kernel\Auth\AuthInterface;
 use App\Kernel\Database\DatabaseInterface;
 use App\Kernel\Http\RedirectInterface;
 use App\Kernel\Http\RequestInterface;
 use App\Kernel\Session\SessionInterface;
+use App\Kernel\Storage\StorageInterface;
 use App\Kernel\View\ViewInterface;
 
 class Router implements RouterInterface
@@ -20,7 +22,9 @@ class Router implements RouterInterface
         private RequestInterface $request,
         private RedirectInterface $redirect,
         private SessionInterface $session,
-        private DatabaseInterface $database
+        private DatabaseInterface $database,
+        private AuthInterface $auth,
+        private StorageInterface $storage
     ) {
         $this->initRoutes();
     }
@@ -29,8 +33,19 @@ class Router implements RouterInterface
     {
         $route = $this->findRoute($uri, $method);
 
-        if (! $route) {
+        if (!$route) {
             $this->notFound();
+        }
+
+        if ($route->hasMiddlewares()) {
+            foreach ($route->getMiddlewares() as $middleware) {
+                /**
+                 * @var \App\Kernel\Middleware\AbstractMiddleware $middleware;
+                 */
+                $middleware = new $middleware($this->request, $this->auth, $this->redirect);
+
+                $middleware->handle();
+            }
         }
 
         if (is_array($route->getAction())) {
@@ -42,6 +57,8 @@ class Router implements RouterInterface
             call_user_func([$controller, 'setRedirect'], $this->redirect);
             call_user_func([$controller, 'setSession'], $this->session);
             call_user_func([$controller, 'setDatabase'], $this->database);
+            call_user_func([$controller, 'setAuth'], $this->auth);
+            call_user_func([$controller, 'setStorage'], $this->storage);
             call_user_func([$controller, $action]);
         } else {
             call_user_func($route->getAction());

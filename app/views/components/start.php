@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var App\Kernel\View\ViewInterface $view;
+ */
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,5 +13,7 @@
     <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
+
+<?php $view->component('header'); ?>
     
 

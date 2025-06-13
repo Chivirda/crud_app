@@ -11,12 +11,22 @@
 
 <h1>Add project</h1>
 
-<form action="/projects/add" method="post">
+<form action="/projects/add" method="post" enctype="multipart/form-data">
     <div class=""><input type="text" name="name"></div>
     <ul>
         <?php if ($session->has('name')): ?>
             <?php foreach ($session->getFlash('name') as $name): ?>
                 <li style="color: red;"><?= $name ?></li>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </ul>
+    <div>
+        <input type="file" name="file">
+    </div>
+    <ul>
+        <?php if ($session->has('file')): ?>
+            <?php foreach ($session->getFlash('file') as $error): ?>
+                <li style="color: red;"><?= $error ?></li>
             <?php endforeach; ?>
         <?php endif; ?>
     </ul>
