@@ -16,13 +16,6 @@ class LoginController extends Controller
         $email = $this->request()->input("email");
         $password = $this->request()->input("password");
 
-        $userId = $this->db()->first("users", ["email" => $email]);
-
-        if (! $userId) {
-            $this->session()->set("email", ["Пользователь с email $email не зарегистрирован"]);
-            $this->redirect("/login");
-        }
-
         $validation = $this->request()->validate([
             "email" => [
                 "required",
@@ -33,21 +26,27 @@ class LoginController extends Controller
             ]
         ]);
 
-        if (! $validation) {
-            foreach ($this->request()->errors() as $field => $error) {
-                $this->session()->set($field, $error);
-            }
-
-            $this->redirect("/login");
+        if (!$validation) {
+            $this->redirectWithErrors($this->request()->errors());
         }
 
-        if ($this->auth()->attempt($email, $password)) {
-            $this->redirect("/");
-        } else {
-            $this->session()->set("password", ["Пароль указан неверно"]);
-            $this->redirect("/login");
+        $userId = $this->db()->first("users", ["email" => $email]);
+
+        if (!$userId) {
+            $this->redirectWithErrors([
+                'email' => ["Пользователь с email $email не зарегистрирован"],
+            ]);
         }
 
+        $user = $this->auth()->attempt($email, $password);
+
+        if (!$user) {
+            $this->redirectWithErrors([
+                'password' => ["Неверный пароль"],
+            ]);
+        }
+
+        $this->redirect("/");
     }
 
     public function logout(): void

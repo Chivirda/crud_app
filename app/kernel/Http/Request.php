@@ -32,6 +32,13 @@ class Request implements RequestInterface
         return $_SERVER['REQUEST_METHOD'];
     }
 
+    public function server(string $key = null): array|string|null
+    {
+        return $key
+            ? ($this->server[$key] ?? null)
+            : $this->server;
+    }
+
     public function input(string $key, mixed $default = null): mixed
     {
         return $this->post[$key] ?? $this->get[$key] ?? $default;

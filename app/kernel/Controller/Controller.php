@@ -90,4 +90,13 @@ abstract class Controller
         $this->redirect->to($uri);
     }
 
+    public function redirectWithErrors(array $errors, ?string $uri = null): void
+    {
+        foreach ($errors as $field => $error) {
+            $this->session()->set($field, $error);
+        }
+
+        $this->redirect($uri ?? $this->request()->server("HTTP_REFERER"));
+    }
+
 }

@@ -14,17 +14,13 @@ class RegisterController extends Controller
     public function register(): void
     {
         $validation = $this->request()->validate([
-            "email" => ["required", "email"],
+            "email" => ["required", "email", "unique:users,email"],
             "password" => ["required", "min:8", "max:255"],
             "name" => ["required", "min:2", "max:255"]
         ]);
 
         if (!$validation) {
-            foreach ($this->request()->errors() as $field => $error) {
-                $this->session()->set($field, $error);
-            }
-
-            $this->redirect("/register");
+            $this->redirectWithErrors($this->request()->errors());
         }
 
         $this->db()->insert("users", [
