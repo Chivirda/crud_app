@@ -40,17 +40,28 @@
 </head>
 <body>
 
-<!-- Навигация для демонстрации -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<!-- Навигация для неавторизованных пользователей -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary guest-nav">
     <div class="container">
-        <a class="navbar-brand" href="#"><i class="fas fa-tasks me-2"></i>Планировщик задач</a>
+        <a class="navbar-brand" href="#" onclick="showPage('index')"><i class="fas fa-tasks me-2"></i>Планировщик задач</a>
         <div class="navbar-nav ms-auto">
-            <button class="btn btn-outline-light btn-sm me-2" onclick="showPage('index')">Гостевая</button>
             <button class="btn btn-outline-light btn-sm me-2" onclick="showPage('register')">Регистрация</button>
-            <button class="btn btn-outline-light btn-sm me-2" onclick="showPage('login')">Вход</button>
-            <button class="btn btn-outline-light btn-sm me-2" onclick="showPage('dashboard')">Главная</button>
-            <button class="btn btn-outline-light btn-sm me-2" onclick="showPage('add-project')">Добавить проект</button>
-            <button class="btn btn-outline-light btn-sm" onclick="showPage('add-task')">Добавить задачу</button>
+            <button class="btn btn-outline-light btn-sm" onclick="showPage('login')">Вход</button>
+        </div>
+    </div>
+</nav>
+
+<!-- Навигация для демонстрации (только для разработки) -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light demo-nav">
+    <div class="container">
+        <span class="navbar-brand text-muted">Демо навигация:</span>
+        <div class="navbar-nav ms-auto">
+            <button class="btn btn-outline-secondary btn-sm me-1" onclick="showPage('index')">Гостевая</button>
+            <button class="btn btn-outline-secondary btn-sm me-1" onclick="showPage('register')">Регистрация</button>
+            <button class="btn btn-outline-secondary btn-sm me-1" onclick="showPage('login')">Вход</button>
+            <button class="btn btn-outline-secondary btn-sm me-1" onclick="showPage('dashboard')">Главная</button>
+            <button class="btn btn-outline-secondary btn-sm me-1" onclick="showPage('add-project')">Добавить проект</button>
+            <button class="btn btn-outline-secondary btn-sm" onclick="showPage('add-task')">Добавить задачу</button>
         </div>
     </div>
 </nav>
@@ -199,18 +210,69 @@
                     </div>
                     <div class="card-body">
                         <div class="list-group list-group-flush">
-                            <a href="#" class="list-group-item list-group-item-action active">
-                                <i class="fas fa-inbox me-2"></i>Входящие <span class="badge bg-primary rounded-pill">5</span>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <i class="fas fa-briefcase me-2"></i>Работа <span class="badge bg-secondary rounded-pill">3</span>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <i class="fas fa-home me-2"></i>Личные дела <span class="badge bg-secondary rounded-pill">2</span>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <i class="fas fa-graduation-cap me-2"></i>Обучение <span class="badge bg-secondary rounded-pill">1</span>
-                            </a>
+                            <div class="list-group-item list-group-item-action active d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-inbox me-2"></i>Входящие <span class="badge bg-primary rounded-pill ms-2">5</span>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#" onclick="confirmDeleteProject(1, 'Входящие', 5)">
+                                            <i class="fas fa-trash text-danger me-2"></i>Удалить проект
+                                        </a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="confirmDeleteProject(1, 'Входящие', 5)">
+                                            <i class="fas fa-edit me-2"></i>Изменить проект
+                                        </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-briefcase me-2"></i>Работа <span class="badge bg-secondary rounded-pill ms-2">3</span>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#" onclick="confirmDeleteProject(2, 'Работа', 3)">
+                                            <i class="fas fa-trash text-danger me-2"></i>Удалить проект
+                                        </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-home me-2"></i>Личные дела <span class="badge bg-secondary rounded-pill ms-2">2</span>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#" onclick="confirmDeleteProject(3, 'Личные дела', 2)">
+                                            <i class="fas fa-trash text-danger me-2"></i>Удалить проект
+                                        </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-graduation-cap me-2"></i>Обучение <span class="badge bg-secondary rounded-pill ms-2">1</span>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#" onclick="confirmDeleteProject(4, 'Обучение', 1)">
+                                            <i class="fas fa-trash text-danger me-2"></i>Удалить проект
+                                        </a></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                         <div class="mt-3">
                             <button class="btn btn-outline-primary w-100" onclick="showPage('add-project')">
@@ -282,7 +344,17 @@
                                 </div>
                                 <div class="task-meta d-flex align-items-center">
                                     <i class="fas fa-paperclip text-muted me-2" title="Есть вложение"></i>
-                                    <span class="badge bg-warning text-dark">Сегодня</span>
+                                    <span class="badge bg-warning text-dark me-2">Сегодня</span>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#" onclick="confirmDeleteTask(1, 'Подготовить презентацию для клиента')">
+                                                <i class="fas fa-trash text-danger me-2"></i>Удалить задачу
+                                            </a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -298,8 +370,18 @@
                                         Отправить отчет по проекту
                                     </label>
                                 </div>
-                                <div class="task-meta">
-                                    <span class="badge bg-danger">Просрочено</span>
+                                <div class="task-meta d-flex align-items-center">
+                                    <span class="badge bg-danger me-2">Просрочено</span>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#" onclick="confirmDeleteTask(2, 'Отправить отчет по проекту')">
+                                                <i class="fas fa-trash text-danger me-2"></i>Удалить задачу
+                                            </a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -315,8 +397,18 @@
                                         Провести встречу с командой
                                     </label>
                                 </div>
-                                <div class="task-meta">
-                                    <span class="badge bg-info">Завтра</span>
+                                <div class="task-meta d-flex align-items-center">
+                                    <span class="badge bg-info me-2">Завтра</span>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#" onclick="confirmDeleteTask(3, 'Провести встречу с командой')">
+                                                <i class="fas fa-trash text-danger me-2"></i>Удалить задачу
+                                            </a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -332,8 +424,18 @@
                                         Купить продукты
                                     </label>
                                 </div>
-                                <div class="task-meta">
-                                    <span class="badge bg-success">Выполнено</span>
+                                <div class="task-meta d-flex align-items-center">
+                                    <span class="badge bg-success me-2">Выполнено</span>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#" onclick="confirmDeleteTask(4, 'Купить продукты')">
+                                                <i class="fas fa-trash text-danger me-2"></i>Удалить задачу
+                                            </a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -441,8 +543,62 @@
     </div>
 </div>
 
+<!-- Модальные окна для подтверждения удаления -->
+
+<!-- Модальное окно удаления проекта -->
+<div class="modal fade" id="deleteProjectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-exclamation-triangle text-warning me-2"></i>Подтверждение удаления</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Внимание!</strong> При удалении проекта будут удалены все связанные с ним задачи.
+                </div>
+                <p>Вы уверены, что хотите удалить проект <strong id="projectNameToDelete"></strong>?</p>
+                <p class="text-muted">Количество задач, которые будут удалены: <span id="tasksCountToDelete" class="fw-bold"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-danger" onclick="deleteProject()">
+                    <i class="fas fa-trash me-2"></i>Удалить проект
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно удаления задачи -->
+<div class="modal fade" id="deleteTaskModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-exclamation-triangle text-warning me-2"></i>Подтверждение удаления</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите удалить задачу <strong id="taskNameToDelete"></strong>?</p>
+                <p class="text-muted">Это действие нельзя будет отменить.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-danger" onclick="deleteTask()">
+                    <i class="fas fa-trash me-2"></i>Удалить задачу
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script>
+    // Переменные для хранения данных удаления
+    let projectToDelete = null;
+    let taskToDelete = null;
+
     // Функция для переключения между страницами (только для демонстрации)
     function showPage(pageId) {
         // Скрыть все страницы
@@ -451,6 +607,69 @@
         
         // Показать выбранную страницу
         document.getElementById(pageId).classList.add('active');
+        
+        // Управление видимостью навбаров
+        const guestNav = document.querySelector('.guest-nav');
+        const demoNav = document.querySelector('.demo-nav');
+        
+        if (pageId === 'dashboard' || pageId === 'add-project' || pageId === 'add-task') {
+            // Для авторизованных страниц скрываем гостевой навбар
+            guestNav.style.display = 'none';
+        } else {
+            // Для гостевых страниц показываем навбар
+            guestNav.style.display = 'block';
+        }
+    }
+
+    // Функции для подтверждения удаления проектов
+    function confirmDeleteProject(projectId, projectName, tasksCount) {
+        projectToDelete = projectId;
+        document.getElementById('projectNameToDelete').textContent = projectName;
+        document.getElementById('tasksCountToDelete').textContent = tasksCount;
+        
+        const modal = new bootstrap.Modal(document.getElementById('deleteProjectModal'));
+        modal.show();
+    }
+
+    function deleteProject() {
+        if (projectToDelete) {
+            // Здесь будет AJAX запрос на сервер для удаления проекта
+            console.log('Удаляем проект с ID:', projectToDelete);
+            
+            // Для демонстрации просто закрываем модалку и показываем уведомление
+            const modal = bootstrap.Modal.getInstance(document.getElementById('deleteProjectModal'));
+            modal.hide();
+            
+            // В реальном приложении здесь будет перезагрузка списка проектов
+            alert('Проект удален! (В реальном приложении произойдет обновление страницы)');
+            
+            projectToDelete = null;
+        }
+    }
+
+    // Функции для подтверждения удаления задач
+    function confirmDeleteTask(taskId, taskName) {
+        taskToDelete = taskId;
+        document.getElementById('taskNameToDelete').textContent = taskName;
+        
+        const modal = new bootstrap.Modal(document.getElementById('deleteTaskModal'));
+        modal.show();
+    }
+
+    function deleteTask() {
+        if (taskToDelete) {
+            // Здесь будет AJAX запрос на сервер для удаления задачи
+            console.log('Удаляем задачу с ID:', taskToDelete);
+            
+            // Для демонстрации просто закрываем модалку и показываем уведомление
+            const modal = bootstrap.Modal.getInstance(document.getElementById('deleteTaskModal'));
+            modal.hide();
+            
+            // В реальном приложении здесь будет перезагрузка списка задач
+            alert('Задача удалена! (В реальном приложении произойдет обновление страницы)');
+            
+            taskToDelete = null;
+        }
     }
 
     // Демонстрация интерактивности
@@ -489,6 +708,9 @@
                 }
             });
         });
+
+        // Инициализация: показать гостевую страницу
+        showPage('index');
     });
 </script>
 
