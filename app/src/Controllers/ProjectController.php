@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Kernel\Controller\Controller;
+use App\Services\ProjectService;
 
 class ProjectController extends Controller
 {
@@ -13,10 +14,6 @@ class ProjectController extends Controller
 
     public function store(): void
     {
-        $file = $this->request()->file("file");
-
-        $filePath = $file->move('projects');
-
         $validation = $this->request()->validate([
             "name" => [
                 "required",
@@ -29,10 +26,11 @@ class ProjectController extends Controller
             $this->redirectWithErrors($this->request()->errors());
         }
 
-        $id = $this->db()->insert('projects', [
+        $this->db()->insert('projects', [
             'name'=> $this->request()->input('name'),
+            'user_id' => $this->auth()->user()->id()
         ]);
 
-        dd("Project created with id: $id");
+        $this->redirect('/');
     }
 }

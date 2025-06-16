@@ -32,6 +32,24 @@ class Database implements DatabaseInterface
         return $result ?: null;
     }
 
+    public function get(string $table, array $conditions = []): ?array
+    {
+        $where = "";
+
+        if (!empty($conditions)) {
+            $where = "WHERE " . implode(" AND ", array_map(fn($field) => "$field = :$field", array_keys($conditions)));
+        }
+
+        $sql = "SELECT * FROM $table $where";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($conditions);
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result ?: null;
+    }
+
     public function insert(string $table, array $data): int|false
     {
         $fields = implode(",", array_keys($data));
