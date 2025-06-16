@@ -20,11 +20,7 @@ class RegisterController extends Controller
         ]);
 
         if (!$validation) {
-            foreach ($this->request()->errors() as $field => $error) {
-                $this->session()->set($field, $error);
-            }
-
-            $this->redirect("/register");
+            $this->redirectWithErrors($this->request()->errors());
         }
 
         $this->db()->insert("users", [

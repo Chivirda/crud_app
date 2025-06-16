@@ -25,12 +25,8 @@ class ProjectController extends Controller
             ]
         ]);
 
-        if (! $validation) {
-            foreach ($this->request()->errors() as $field => $error) {
-                $this->session()->set($field, $error);
-            }
-
-            $this->redirect("/projects/add");
+        if (!$validation) {
+            $this->redirectWithErrors($this->request()->errors());
         }
 
         $id = $this->db()->insert('projects', [
