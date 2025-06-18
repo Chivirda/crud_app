@@ -50,7 +50,7 @@ class Database implements DatabaseInterface
         return $result ?: [];
     }
 
-    public function insert(string $table, array $data): int|false
+    public function insert(string $table, array $data): int|string
     {
         $fields = implode(",", array_keys($data));
         $binds = implode(",", array_map(fn($field) => ":$field", array_keys($data)));
@@ -61,7 +61,7 @@ class Database implements DatabaseInterface
         try {
             $stmt->execute($data);
         } catch (\PDOException $exception) {
-            return false;
+            return $exception->getMessage();
         }
 
         return (int) $this->pdo->lastInsertId();

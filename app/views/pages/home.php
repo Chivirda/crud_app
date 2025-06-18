@@ -73,7 +73,7 @@
                     </form>
                 </div>
                 <div class="col-md-4 text-end">
-                    <a class="btn btn-primary" href="/projects/add">
+                    <a class="btn btn-primary" href="/tasks/add">
                         <i class="fas fa-plus me-2"></i>Добавить задачу
                     </a>
                 </div>
