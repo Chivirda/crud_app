@@ -10,13 +10,15 @@ class UploadedFile implements UploadedFileInterface
         public readonly string $tmpName,
         public readonly int $error,
         public readonly int $size,
-    ){}
+    ) {
+    }
 
-    public function move(string $path, string $name = null): string|false {
+    public function move(string $path, string $name = null): string|false
+    {
         $storagePath = APP_PATH . "/storage/$path";
 
         if (!is_dir($storagePath)) {
-            mkdir($storagePath,0775, true);
+            mkdir($storagePath, 0775, true);
         }
 
         $fileName  = $name ?? $this->randomFileName();
@@ -37,6 +39,6 @@ class UploadedFile implements UploadedFileInterface
 
     private function randomFileName(): string
     {
-        return hash("sha256", uniqid()) . "." . $this->getExtension();
+        return hash('sha256', uniqid()) . '.' . $this->getExtension();
     }
 }

@@ -16,10 +16,10 @@ class Database implements DatabaseInterface
 
     public function first(string $table, array $conditions = []): ?array
     {
-        $where = "";
+        $where = '';
 
         if (!empty($conditions)) {
-            $where = "WHERE " . implode(" AND ", array_map(fn($field) => "$field = :$field", array_keys($conditions)));
+            $where = 'WHERE ' . implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
         }
 
         $sql = "SELECT * FROM $table $where LIMIT 1";
@@ -34,10 +34,10 @@ class Database implements DatabaseInterface
 
     public function get(string $table, array $conditions = []): array
     {
-        $where = "";
+        $where = '';
 
         if (!empty($conditions)) {
-            $where = "WHERE " . implode(" AND ", array_map(fn($field) => "$field = :$field", array_keys($conditions)));
+            $where = 'WHERE ' . implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
         }
 
         $sql = "SELECT * FROM $table $where";
@@ -47,13 +47,13 @@ class Database implements DatabaseInterface
 
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        return $result ?: [];
+        return $result ?? [];
     }
 
     public function insert(string $table, array $data): int|string
     {
-        $fields = implode(",", array_keys($data));
-        $binds = implode(",", array_map(fn($field) => ":$field", array_keys($data)));
+        $fields = implode(',', array_keys($data));
+        $binds = implode(',', array_map(fn ($field) => ":$field", array_keys($data)));
 
         $sql = "INSERT INTO $table ($fields) VALUES ($binds)";
         $stmt = $this->pdo->prepare($sql);
@@ -71,12 +71,12 @@ class Database implements DatabaseInterface
     {
         $fields = array_keys($data);
 
-        $set = implode(" ", array_map(fn($field) => "$field = :$field", $fields));
+        $set = implode(' ', array_map(fn ($field) => "$field = :$field", $fields));
 
         $where = '';
 
         if (!empty($conditions)) {
-            $where = "WHERE " . implode(" AND ", array_map(fn($field) => "$field = :$field", array_keys($conditions)));
+            $where = 'WHERE ' . implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
         }
 
         $sql = "UPDATE $table SET $set $where";
@@ -87,10 +87,10 @@ class Database implements DatabaseInterface
 
     public function delete(string $table, array $conditions = []): void
     {
-        $where = "";
+        $where = '';
 
         if (!empty($conditions)) {
-            $where = "WHERE " . implode(" AND ", array_map(fn($field) => "$field = :$field", array_keys($conditions)));
+            $where = 'WHERE ' . implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
         }
 
         $sql = "DELETE FROM $table $where";
@@ -103,13 +103,13 @@ class Database implements DatabaseInterface
 
     private function connect(): void
     {
-        $driver = $this->config->get("database.driver");
-        $host = $this->config->get("database.host");
-        $port = $this->config->get("database.port");
-        $database = $this->config->get("database.database");
-        $charset = $this->config->get("database.charset");
-        $username = $this->config->get("database.username");
-        $password = $this->config->get("database.password");
+        $driver = $this->config->get('database.driver');
+        $host = $this->config->get('database.host');
+        $port = $this->config->get('database.port');
+        $database = $this->config->get('database.database');
+        $charset = $this->config->get('database.charset');
+        $username = $this->config->get('database.username');
+        $password = $this->config->get('database.password');
 
         try {
             $this->pdo = new PDO(

@@ -6,7 +6,7 @@ class Config implements ConfigInterface
 {
     public function get(string $key, $default = null): mixed
     {
-        [$file, $key] = explode(".", $key);
+        [$file, $key] = explode('.', $key);
 
         $configPath = APP_PATH . "/config/$file.php";
 

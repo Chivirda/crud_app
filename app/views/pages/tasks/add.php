@@ -1,7 +1,7 @@
 <?php
 /**
  * @var App\Kernel\View\View $view;
- * @var App\Kernel\Session\Session $session; 
+ * @var App\Kernel\Session\Session $session;
  * @var App\Services\ProjectService $projects;
  */
 ?>
@@ -31,7 +31,7 @@
                                 <label for="task-project" class="form-label">Проект *</label>
                                 <select class="form-select" id="task-project" name="project_id" required>
                                     <option value="">Выберите проект</option>
-                                    <?php foreach($projects as $project): ?>
+                                    <?php foreach ($projects as $project): ?>
                                         <option value="<?= $project->id() ?>"><?= $project->name() ?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -49,7 +49,7 @@
                                 <label for="task-file" class="form-label">Файл</label>
                                 <input type="file" class="form-control" id="task-file" name="file">
                                 <div class="form-text">Необязательное поле</div>
-                                <?php if($session->has('file')): ?>
+                                <?php if ($session->has('file')): ?>
                                     <?php foreach ($session->getFlash('password') as $error): ?>
                                     <div class="error" id="task-file-error"><?= $error ?></div>
                                     <?php endforeach; ?>

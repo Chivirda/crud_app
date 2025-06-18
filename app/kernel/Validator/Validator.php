@@ -23,7 +23,7 @@ class Validator implements ValidatorInterface
             $localRules = $rule;
 
             foreach ($localRules as $rule) {
-                $rule = explode(":", $rule);
+                $rule = explode(':', $rule);
                 $ruleName = $rule[0];
                 $ruleValue = $rule[1] ?? null;
 
@@ -48,11 +48,11 @@ class Validator implements ValidatorInterface
         $value = $this->data[$field];
 
         return match ($ruleName) {
-            "required" => empty($value) ? "Field $field is required" : false,
-            "min" => (mb_strlen($value) < $ruleValue) ? "Field $field must be at leeast $ruleValue characters" : false,
-            "max" => (mb_strlen($value) > $ruleValue) ? "Field $field must be at most $ruleValue characters" : false,
-            "email" => (!filter_var($value, FILTER_VALIDATE_EMAIL)) ? "Field $field must be a valid email" : false,
-            "unique" => $this->unique($field, $value, $ruleValue),
+            'required' => empty($value) ? "Field $field is required" : false,
+            'min' => (mb_strlen($value) < $ruleValue) ? "Field $field must be at leeast $ruleValue characters" : false,
+            'max' => (mb_strlen($value) > $ruleValue) ? "Field $field must be at most $ruleValue characters" : false,
+            'email' => (!filter_var($value, FILTER_VALIDATE_EMAIL)) ? "Field $field must be a valid email" : false,
+            'unique' => $this->unique($field, $value, $ruleValue),
             default => false,
         };
     }
@@ -63,7 +63,7 @@ class Validator implements ValidatorInterface
             return false;
         }
 
-        [$table, $column] = explode(",", $ruleValue);
+        [$table, $column] = explode(',', $ruleValue);
         $column ??= $field;
 
         $exists = $this->db->first($table, [$column => $value]);
