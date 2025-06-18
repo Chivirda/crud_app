@@ -33,7 +33,6 @@ class Database implements DatabaseInterface
     }
 
     public function get(string $table, array $conditions = []): array
-    public function get(string $table, array $conditions = []): array
     {
         $where = "";
 
