@@ -67,6 +67,40 @@ class Database implements DatabaseInterface
         return (int) $this->pdo->lastInsertId();
     }
 
+    public function update(string $table, array $data, array $conditions = []): void
+    {
+        $fields = array_keys($data);
+
+        $set = implode(" ", array_map(fn($field) => "$field = :$field", $fields));
+
+        $where = '';
+
+        if (!empty($conditions)) {
+            $where = "WHERE " . implode(" AND ", array_map(fn($field) => "$field = :$field", array_keys($conditions)));
+        }
+
+        $sql = "UPDATE $table SET $set $where";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(array_merge($data, $conditions));
+    }
+
+    public function delete(string $table, array $conditions = []): void
+    {
+        $where = "";
+
+        if (!empty($conditions)) {
+            $where = "WHERE " . implode(" AND ", array_map(fn($field) => "$field = :$field", array_keys($conditions)));
+        }
+
+        $sql = "DELETE FROM $table $where";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($conditions);
+
+        $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     private function connect(): void
     {
         $driver = $this->config->get("database.driver");

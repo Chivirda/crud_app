@@ -17,30 +17,36 @@
                 </div>
                 <div class="card-body">
                     <div class="list-group list-group-flush">
-                        <?php foreach($projects as $poroject): ?>
-                        <div
-                            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                            <div>
-                                <i class="fas fa-inbox me-2"></i><?= $poroject->name() ?> <span
-                                    class="badge bg-primary rounded-pill ms-2"><?= $poroject->activeTasksCount() ?></span>
+                        <?php foreach ($projects as $project): ?>
+                            <div
+                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-inbox me-2"></i><?= $project->name() ?> <span
+                                        class="badge bg-primary rounded-pill ms-2"><?= $project->activeTasksCount() ?></span>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <form action="/projects/delete" method="post">
+                                                <input type="hidden" name="id" value="<?= $project->id() ?>">
+                                                <button class="dropdown-item"
+                                                    onclick="confirmDeleteProject(1, 'Входящие', 5)">
+                                                    <i class="fas fa-trash text-danger me-2"></i>Удалить проект
+                                                </button>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="/projects/update?id=<?= $project->id() ?>" onclick="confirmDeleteProject(1, 'Входящие', 5)">
+                                                <i class="fas fa-edit me-2"></i>Изменить проект
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="dropdown">
-                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
-                                    data-bs-toggle="dropdown">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#"
-                                            onclick="confirmDeleteProject(1, 'Входящие', 5)">
-                                            <i class="fas fa-trash text-danger me-2"></i>Удалить проект
-                                        </a></li>
-                                    <li><a class="dropdown-item" href="#"
-                                            onclick="confirmDeleteProject(1, 'Входящие', 5)">
-                                            <i class="fas fa-edit me-2"></i>Изменить проект
-                                        </a></li>
-                                </ul>
-                            </div>
-                        </div>
                         <?php endforeach; ?>
                     </div>
                     <div class="mt-3">
@@ -83,7 +89,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i class="fas fa-calendar-day me-2"></i>Повестка дня</a>
                         </li>
-                            <a class="nav-link" href="#"><i class="fas fa-calendar-plus me-2"></i>Завтра</a>
+                        <a class="nav-link" href="#"><i class="fas fa-calendar-plus me-2"></i>Завтра</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-danger" href="#"><i

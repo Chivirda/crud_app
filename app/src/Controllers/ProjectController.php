@@ -27,10 +27,38 @@ class ProjectController extends Controller
         }
 
         $this->db()->insert('projects', [
-            'name'=> $this->request()->input('name'),
+            'name' => $this->request()->input('name'),
             'user_id' => $this->auth()->user()->id()
         ]);
 
         $this->redirect('/');
+    }
+
+    public function edit(): void
+    {
+        $project = $this->service()->find($this->request()->input('id'));
+
+        $this->view('projects/edit', [
+            'project'=> $project
+        ]);
+    }
+
+    public function update(): void
+    {
+        $this->service()->update($this->request()->input('id'), $this->request()->input('name'));
+
+        $this->redirect('/');
+    }
+
+    public function destroy(): void
+    {
+        $this->service()->delete($this->request()->input('id'));
+
+        $this->redirect('/');
+    }
+
+    private function service(): ProjectService
+    {
+        return new ProjectService($this->db());
     }
 }
