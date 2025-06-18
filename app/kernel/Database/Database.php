@@ -32,7 +32,7 @@ class Database implements DatabaseInterface
         return $result ?: null;
     }
 
-    public function get(string $table, array $conditions = []): ?array
+    public function get(string $table, array $conditions = []): array
     {
         $where = "";
 
@@ -47,7 +47,7 @@ class Database implements DatabaseInterface
 
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        return $result ?: null;
+        return $result ?: [];
     }
 
     public function insert(string $table, array $data): int|false

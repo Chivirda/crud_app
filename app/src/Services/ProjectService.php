@@ -23,8 +23,9 @@ class ProjectService
                 id: $project['id'],
                 name: $project['name'],
                 userId: $project['user_id'],
-                createdAt: $project['created_at']
+                createdAt: $project['created_at'],
+                db:$this->db
             );
         }, $projects);
     }
-}
+ }

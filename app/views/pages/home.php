@@ -22,7 +22,7 @@
                             class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             <div>
                                 <i class="fas fa-inbox me-2"></i><?= $poroject->name() ?> <span
-                                    class="badge bg-primary rounded-pill ms-2">5</span>
+                                    class="badge bg-primary rounded-pill ms-2"><?= $poroject->activeTasksCount() ?></span>
                             </div>
                             <div class="dropdown">
                                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
