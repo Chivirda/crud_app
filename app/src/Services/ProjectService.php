@@ -23,8 +23,42 @@ class ProjectService
                 id: $project['id'],
                 name: $project['name'],
                 userId: $project['user_id'],
-                createdAt: $project['created_at']
+                createdAt: $project['created_at'],
+                db:$this->db
             );
         }, $projects);
     }
-}
+
+    public function find(int $id): ?Project
+    {
+        $project = $this->db->first('projects', [
+            'id'=> $id
+        ]);
+
+        if (! $project) {
+            return null;
+        }
+
+        return new Project(
+            id: $project['id'],
+            name: $project['name'],
+            userId: $project['user_id'],
+            createdAt: $project['created_at'],
+            db: $this->db
+        );
+    }
+
+    public function update(int $id, string $name): void
+    {
+        $this->db->update('projects', [
+            'name'=> $name
+        ], [
+            'id'=> $id
+        ]);
+    }
+
+    public function delete(int $id): void
+    {
+        $this->db->delete('projects', ['id'=> $id]);
+    }
+ }

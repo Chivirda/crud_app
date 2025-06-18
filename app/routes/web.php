@@ -5,6 +5,7 @@ use App\Controllers\HomeController;
 use App\Controllers\LoginController;
 use App\Controllers\ProjectController;
 use App\Controllers\RegisterController;
+use App\Controllers\TaskController;
 use App\Kernel\Router\Route;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\GuestMiddleware;
@@ -15,8 +16,14 @@ return [
   Route::get('/guest', [GuestController::class, 'index']),
 
   Route::get('/projects/add', [ProjectController::class,'add'], [AuthMiddleware::class]),
-  Route::post('/projects/add', [ProjectController::class,'store']),
+  Route::post('/projects/add', [ProjectController::class,'store'],[AuthMiddleware::class]),
+  Route::get('/projects/update', [ProjectController::class,'edit'],[AuthMiddleware::class]),
+  Route::post('/projects/update', [ProjectController::class,'update'],[AuthMiddleware::class]),
+  Route::post('/projects/delete', [ProjectController::class,'destroy'],[AuthMiddleware::class]),
 
+  Route::get('/tasks/add', [TaskController::class,'add'], [AuthMiddleware::class]),
+  Route::post('/tasks/add', [TaskController::class,'store'], [AuthMiddleware::class]),
+  
   Route::get('/register', [RegisterController::class,'index'], [LoginMiddleware::class]),
   Route::post('/register', [RegisterController::class,'register']),
 
