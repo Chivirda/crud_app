@@ -1,6 +1,6 @@
 <?php
 
 return [
-    "name" => "TO-DO list",
-    "url" => "http://localhost:8010",
+    'name' => 'TO-DO list',
+    'url' => 'http://localhost:8010',
 ];

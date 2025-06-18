@@ -29,7 +29,7 @@ class Auth implements AuthInterface
             return false;
         }
 
-        $this->session->set($this->sessionField(), $user["id"]);
+        $this->session->set($this->sessionField(), $user['id']);
 
         return true;
     }
@@ -63,21 +63,21 @@ class Auth implements AuthInterface
 
     public function table(): string
     {
-        return $this->config->get("auth.table", "users");
+        return $this->config->get('auth.table', 'users');
     }
 
-    public function username(): string 
+    public function username(): string
     {
-        return $this->config->get("auth.username","email");
+        return $this->config->get('auth.username', 'email');
     }
 
     public function password(): string
     {
-        return $this->config->get("auth.password","password");
+        return $this->config->get('auth.password', 'password');
     }
 
     public function sessionField(): string
     {
-        return $this->config->get("auth.sesion_field","user_id");
+        return $this->config->get('auth.sesion_field', 'user_id');
     }
 }

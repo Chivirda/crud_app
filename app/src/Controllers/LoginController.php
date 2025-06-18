@@ -8,21 +8,21 @@ class LoginController extends Controller
 {
     public function index(): void
     {
-        $this->view("login");
+        $this->view('login');
     }
 
     public function login(): void
     {
-        $email = $this->request()->input("email");
-        $password = $this->request()->input("password");
+        $email = $this->request()->input('email');
+        $password = $this->request()->input('password');
 
         $validation = $this->request()->validate([
-            "email" => [
-                "required",
-                "email"
+            'email' => [
+                'required',
+                'email'
             ],
-            "password" => [
-                "min:4"
+            'password' => [
+                'min:4'
             ]
         ]);
 
@@ -30,11 +30,11 @@ class LoginController extends Controller
             $this->redirectWithErrors($this->request()->errors());
         }
 
-        $userId = $this->db()->first("users", ["email" => $email]);
+        $userId = $this->db()->first('users', ['email' => $email]);
 
         if (!$userId) {
             $this->redirectWithErrors([
-                "email" => ["Пользователь с email $email не зарегистрирован"],
+                'email' => ["Пользователь с email $email не зарегистрирован"],
             ]);
         }
 
@@ -42,17 +42,17 @@ class LoginController extends Controller
 
         if (!$user) {
             $this->redirectWithErrors([
-                "password" => ["Неверный пароль"]
+                'password' => ['Неверный пароль']
             ]);
         }
 
-        $this->redirect("/");
+        $this->redirect('/');
     }
 
     public function logout(): void
     {
         $this->auth()->logout();
 
-        $this->redirect("/guest");
+        $this->redirect('/guest');
     }
 }

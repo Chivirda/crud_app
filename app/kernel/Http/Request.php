@@ -24,7 +24,7 @@ class Request implements RequestInterface
 
     public function uri(): string
     {
-        return strtok($this->server["REQUEST_URI"],"?");
+        return strtok($this->server['REQUEST_URI'], '?');
     }
 
     public function method(): string

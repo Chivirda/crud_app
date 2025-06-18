@@ -9,14 +9,15 @@ class ProjectService
 {
     public function __construct(
         private DatabaseInterface $db
-    ) {}
+    ) {
+    }
 
     /**
      * @return array<Project>
      */
     public function all(): array
     {
-        $projects = $this->db->get("projects");
+        $projects = $this->db->get('projects');
 
         return array_map(function ($project) {
             return new Project(
@@ -32,7 +33,7 @@ class ProjectService
     public function find(int $id): ?Project
     {
         $project = $this->db->first('projects', [
-            'id'=> $id
+            'id' => $id
         ]);
 
         if (! $project) {
@@ -51,14 +52,14 @@ class ProjectService
     public function update(int $id, string $name): void
     {
         $this->db->update('projects', [
-            'name'=> $name
+            'name' => $name
         ], [
-            'id'=> $id
+            'id' => $id
         ]);
     }
 
     public function delete(int $id): void
     {
-        $this->db->delete('projects', ['id'=> $id]);
+        $this->db->delete('projects', ['id' => $id]);
     }
- }
+}

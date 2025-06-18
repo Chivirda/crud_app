@@ -8,11 +8,12 @@ class Storage implements StorageInterface
 {
     public function __construct(
         private ConfigInterface $config
-    ) {}
+    ) {
+    }
 
     public function url(string $path): string
     {
-        $url = $this->config->get("app.url", "http://localhost:8000");
+        $url = $this->config->get('app.url', 'http://localhost:8000');
 
         return "$url/{$this->storagePath($path)}";
     }

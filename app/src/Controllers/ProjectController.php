@@ -9,16 +9,16 @@ class ProjectController extends Controller
 {
     public function add(): void
     {
-        $this->view("projects/add");
+        $this->view('projects/add');
     }
 
     public function store(): void
     {
         $validation = $this->request()->validate([
-            "name" => [
-                "required",
-                "min:3",
-                "max:12"
+            'name' => [
+                'required',
+                'min:3',
+                'max:50'
             ]
         ]);
 
@@ -39,7 +39,7 @@ class ProjectController extends Controller
         $project = $this->service()->find($this->request()->input('id'));
 
         $this->view('projects/edit', [
-            'project'=> $project
+            'project' => $project
         ]);
     }
 

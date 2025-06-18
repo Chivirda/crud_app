@@ -12,7 +12,7 @@ class Project
         private int $userId,
         private string $createdAt,
         private DatabaseInterface $db
-    ){
+    ) {
     }
 
     public function id(): int

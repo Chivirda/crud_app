@@ -96,7 +96,7 @@ abstract class Controller
             $this->session()->set($field, $error);
         }
 
-        $this->redirect($uri ?? $this->request()->server("HTTP_REFERER"));
+        $this->redirect($uri ?? $this->request()->server('HTTP_REFERER'));
     }
 
 }

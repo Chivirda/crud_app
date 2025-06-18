@@ -1,3 +1,8 @@
 {
-  "preset": "psr12"
+  "preset": "psr12",
+  "rules": {
+    "void_return": true,
+    "return_type_declaration": true,
+    "single_quote": true
+  }
 }

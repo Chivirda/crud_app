@@ -11,21 +11,21 @@ class TaskController extends Controller
     {
         $projects = $this->projectService()->all();
 
-        $this->view("tasks/add", [
-            "projects" => $projects
+        $this->view('tasks/add', [
+            'projects' => $projects
         ]);
     }
 
     public function store(): void
     {
         $validation = $this->request()->validate([
-            "name" => [
-                "required",
-                "min:3",
-                "max:256"
+            'name' => [
+                'required',
+                'min:3',
+                'max:256'
             ],
-            "project_id" => [
-                "required",
+            'project_id' => [
+                'required',
             ]
         ]);
 
@@ -33,7 +33,7 @@ class TaskController extends Controller
             $this->redirectWithErrors($this->request()->errors());
         }
 
-        $file = $this->request()->file("file");
+        $file = $this->request()->file('file');
 
         $taskId = $this->db()->insert('tasks', [
             'name' => $this->request()->input('name'),
@@ -44,7 +44,7 @@ class TaskController extends Controller
         ]);
 
         if (is_string($taskId)) {
-            $this->redirectWithErrors([ 'file' => $taskId]);
+            $this->redirectWithErrors(['file' => $taskId]);
         }
 
         $this->redirect('/');
