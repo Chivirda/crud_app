@@ -26,7 +26,7 @@ class ProjectController extends Controller
             $this->redirectWithErrors($this->request()->errors());
         }
 
-        $this->db()->insert('projects', [
+        $this->service()->store([
             'name' => $this->request()->input('name'),
             'user_id' => $this->auth()->user()->id()
         ]);
