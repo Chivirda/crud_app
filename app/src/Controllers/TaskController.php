@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Kernel\Controller\Controller;
 use App\Services\ProjectService;
+use App\Services\TaskService;
 
 class TaskController extends Controller
 {
@@ -35,7 +36,7 @@ class TaskController extends Controller
 
         $file = $this->request()->file('file');
 
-        $taskId = $this->db()->insert('tasks', [
+        $taskId = $this->service()->store([
             'name' => $this->request()->input('name'),
             'user_id' => $this->auth()->user()->id(),
             'project_id' => $this->request()->input('project_id'),
@@ -53,5 +54,10 @@ class TaskController extends Controller
     private function projectService(): ProjectService
     {
         return new ProjectService($this->db());
+    }
+
+    private function service(): TaskService
+    {
+        return new TaskService($this->db());
     }
 }
