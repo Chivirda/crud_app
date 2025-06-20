@@ -44,4 +44,11 @@ class Project
 
         return $tasks ? count($tasks) : 0;
     }
+
+    public function tasks(): array
+    {
+        return $this->db->get('tasks', [
+            'project_id' => $this->id
+        ]);
+    }
 }
