@@ -3,6 +3,7 @@
  * @var App\Kernel\View\View $view;
  * @var App\Kernel\Session\Session $session;
  * @var App\Services\ProjectService $projects;
+ * @var \App\Models\Task $task;
  */
 ?>
 
@@ -24,7 +25,7 @@
                             <div class="col-md-8 mb-3">
                                 <label for="task-name" class="form-label">Название *</label>
                                 <input type="text" class="form-control" id="task-name" name="name"
-                                    placeholder="Введите название задачи" required>
+                                    placeholder="Введите название задачи" value="<?= $task->name() ?>" required>
                                 <div class="error" id="task-name-error"></div>
                             </div>
                             <div class="col-md-4 mb-3">
@@ -32,7 +33,7 @@
                                 <select class="form-select" id="task-project" name="project_id" required>
                                     <option value="">Выберите проект</option>
                                     <?php foreach ($projects as $project): ?>
-                                        <option value="<?= $project->id() ?>"><?= $project->name() ?></option>
+                                        <option value="<?= $project->id() ?>" <?php if ($project->id() === $task->projectId()): ?>selected<?php endif; ?>><?= $project->name() ?></option>
                                     <?php endforeach; ?>
                                 </select>
                                 <div class="error" id="task-project-error"></div>
@@ -41,7 +42,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="task-date" class="form-label">Срок выполнения</label>
-                                <input type="date" class="form-control" id="task-date" name="due_date">
+                                <input type="date" class="form-control" id="task-date" name="due_date" value="<?= $task->dueDate() ?>">
                                 <div class="form-text">Формат: ГГГГ-ММ-ДД</div>
                                 <div class="error" id="task-date-error"></div>
                             </div>

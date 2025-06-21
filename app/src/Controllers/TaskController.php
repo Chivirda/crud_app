@@ -51,6 +51,17 @@ class TaskController extends Controller
         $this->redirect('/');
     }
 
+    public function edit(): void
+    {
+        $task = $this->service()->find($this->request()->input('id'));
+        $projects = $this->projectService()->all();
+
+        $this->view('tasks/edit', [
+            'task' => $task,
+            'projects' => $projects
+        ]);
+    }
+
     private function projectService(): ProjectService
     {
         return new ProjectService($this->db());
