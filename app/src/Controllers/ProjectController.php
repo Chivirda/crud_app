@@ -45,7 +45,9 @@ class ProjectController extends Controller
 
     public function update(): void
     {
-        $this->service()->update($this->request()->input('id'), $this->request()->input('name'));
+        $this->service()->update($this->request()->input('id'), [
+            'name' => $this->request()->input('name')
+        ]);
 
         $this->redirect('/');
     }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Kernel\Service;
 
@@ -24,6 +24,15 @@ abstract class AbstractService
     public function all(): array
     {
         $items = $this->db->get($this->tableName);
+
+        return array_map(function ($item) {
+            return $this->createModel($item);
+        }, $items);
+    }
+
+    public function get(array $conditions = []): array
+    {
+        $items = $this->db->get($this->tableName, $conditions);
 
         return array_map(function ($item) {
             return $this->createModel($item);

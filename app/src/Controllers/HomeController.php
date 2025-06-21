@@ -10,12 +10,65 @@ class HomeController extends Controller
 {
     public function index(): void
     {
-        $projects = new ProjectService($this->db());
-        $tasks = new TaskService($this->db());
+        $this->view('home', [
+            'projects' => $this->projectService()->all(),
+            'tasks' => $this->taskService()->all()
+        ]);
+    }
+
+    public function today(): void
+    {
+        $this->view('home', [
+            'projects' => $this->projectService()->all(),
+            'tasks' => $this->taskService()->get([
+                'due_date' => (new \DateTime('today'))->format('Y-m-d')
+            ])
+        ]);
+    }
+
+    public function tomorrow(): void
+    {
+        $this->view('home', [
+            'projects' => $this->projectService()->all(),
+            'tasks' => $this->taskService()->get([
+                'due_date' => (new \DateTime('tomorrow'))->format('Y-m-d')
+            ])
+        ]);
+    }
+
+    public function overdue(): void
+    {
+        $overduetTasks = [];
+
+        foreach ($this->taskService()->all() as $task) {
+            if ($task->dueDate() < (new \DateTime())->format('Y-m-d')) {
+                $overduetTasks[] = $task;
+            }
+        }
 
         $this->view('home', [
-            'projects' => $projects->all(),
-            'tasks' => $tasks->all()
+            'projects' => $this->projectService()->all(),
+            'tasks' => $overduetTasks
         ]);
+    }
+
+    public function done(): void
+    {
+        $this->view('home', [
+            'projects' => $this->projectService()->all(),
+            'tasks' => $this->taskService()->get([
+                'status' => 1
+            ])
+        ]);
+    }
+
+    private function projectService(): ProjectService
+    {
+        return new ProjectService($this->db());
+    }
+
+    private function taskService(): TaskService
+    {
+        return new TaskService($this->db());
     }
 }

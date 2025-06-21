@@ -62,6 +62,43 @@ class TaskController extends Controller
         ]);
     }
 
+    public function update(): void
+    {
+        $validation = $this->request()->validate([
+            'name' => [
+                'required',
+                'min:3',
+                'max:256'
+            ],
+            'project_id' => [
+                'required',
+            ]
+        ]);
+
+        if (!$validation) {
+            $this->redirectWithErrors($this->request()->errors());
+        }
+
+        $data = [
+            'name' => $this->request()->input('name'),
+            'project_id' => $this->request()->input('project_id'),
+            'due_date' => $this->request()->input('due_date') !== '' ? $this->request()->input('due_date') : null,
+            'status' => $this->request()->input('status'),
+            'user_id' => $this->auth()->user()->id()
+        ];
+
+        if ($this->request()->input('file') !== null) {
+            $file = $this->request()->file('file');
+            $data['file_path'] = $file->move('tasks');
+        }
+
+        // dd($data);
+
+        $this->service()->update($this->request()->input('id'), $data);
+
+        $this->redirect('/');
+    }
+
     private function projectService(): ProjectService
     {
         return new ProjectService($this->db());

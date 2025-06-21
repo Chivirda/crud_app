@@ -3,6 +3,7 @@
  * @var App\Kernel\View\View $view;
  * @var App\Models\Project $projects;
  * @var App\Kernel\Storage\StorageInterface $storage;
+ * @var \App\Kernel\Http\RequestInterface $request;
  */
 ?>
 
@@ -17,36 +18,7 @@
                     <h5 class="mb-0"><i class="fas fa-folder me-2"></i>Проекты</h5>
                 </div>
                 <div class="card-body">
-                    <div class="list-group list-group-flush">
-                        <?php foreach ($projects as $project): ?>
-                            <div
-                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                <div>
-                                    <i class="fas fa-inbox me-2"></i><?= htmlspecialchars($project->name()) ?> <span
-                                        class="badge bg-primary rounded-pill ms-2"><?= $project->activeTasksCount() ?></span>
-                                </div>
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
-                                        data-bs-toggle="dropdown">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <button class="dropdown-item"
-                                                onclick="confirmDeleteProject(<?= $project->id() ?>, '<?= htmlspecialchars($project->name(), ENT_QUOTES) ?>', <?= $project->activeTasksCount() ?>)">
-                                                <i class="fas fa-trash text-danger me-2"></i>Удалить проект
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="/projects/update?id=<?= $project->id() ?>">
-                                                <i class="fas fa-edit me-2"></i>Изменить проект
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
+                    <?php $view->component('projects', ['projects' => $projects]); ?>
                     <div class="mt-3">
                         <a class="btn btn-outline-primary w-100" href="/projects/add">
                             <i class="fas fa-plus me-2"></i>Добавить проект
@@ -82,16 +54,19 @@
                 <div class="card-body">
                     <ul class="nav nav-pills">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#"><i class="fas fa-list me-2"></i>Все задачи</a>
+                            <a class="nav-link <?php echo $request->uri() === '/' ? 'active' : '' ?>" href="/"><i
+                                    class="fas fa-list me-2"></i>Все задачи</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-calendar-day me-2"></i>Повестка дня</a>
+                            <a class="nav-link <?php echo $request->uri() === '/today' ? 'active' : '' ?>"
+                                href="/today"><i class="fas fa-calendar-day me-2"></i>Повестка дня</a>
                         </li>
-                        <a class="nav-link" href="#"><i class="fas fa-calendar-plus me-2"></i>Завтра</a>
+                        <a class="nav-link <?php echo $request->uri() === '/tomorrow' ? 'active' : '' ?>"
+                            href="/tomorrow"><i class="fas fa-calendar-plus me-2"></i>Завтра</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-danger" href="#"><i
-                                    class="fas fa-exclamation-triangle me-2"></i>Просроченные</a>
+                            <a class="nav-link <?php echo $request->uri() === '/overdue' ? 'active' : '' ?> text-danger"
+                                href="/overdue"><i class="fas fa-exclamation-triangle me-2"></i>Просроченные</a>
                         </li>
                     </ul>
                 </div>
@@ -101,7 +76,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Входящие</h5>
-                    <a href="#" class="text-decoration-none">Показать выполненные</a>
+                    <a href="/done" class="text-decoration-none">Показать выполненные</a>
                 </div>
                 <div class="card-body">
                     <!-- Задача 1 -->
@@ -117,9 +92,11 @@
                                     </label>
                                 </div>
                                 <div class="task-meta d-flex align-items-center">
-                                    <a href="<?= $storage->url($task->filePath()) ?>">
-                                        <i class="fas fa-paperclip text-muted me-2" title="Есть вложение"></i>
-                                    </a>
+                                    <?php if ($task->filePath()): ?>
+                                        <a href="<?= $storage->url($task->filePath()) ?>">
+                                            <i class="fas fa-paperclip text-muted me-2" title="Есть вложение"></i>
+                                        </a>
+                                    <?php endif; ?>
                                     <span class="badge bg-warning text-dark me-2">Сегодня</span>
                                     <span class="badge bg-danger me-2">Просрочено</span>
                                     <span class="badge bg-info me-2">Завтра</span>

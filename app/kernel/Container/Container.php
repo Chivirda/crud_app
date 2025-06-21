@@ -52,7 +52,7 @@ class Container
         $this->request->setValidator($this->validator);
         $this->auth = new Auth($this->database, $this->session, $this->config);
         $this->storage = new Storage($this->config);
-        $this->view = new View($this->session, $this->auth, $this->storage);
+        $this->view = new View($this->session, $this->auth, $this->storage, $this->request);
         $this->router = new Router(
             $this->view,
             $this->request,

@@ -11,7 +11,7 @@ class Task
         private string $name,
         private int $status,
         private string $dueDate,
-        private string $filePath,
+        private ?string $filePath,
         private int $userId,
         private int $projectId,
         private string $createdAt,
@@ -39,7 +39,7 @@ class Task
         return $this->dueDate;
     }
 
-    public function filePath(): string
+    public function filePath(): ?string
     {
         return $this->filePath;
     }

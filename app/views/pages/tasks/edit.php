@@ -14,13 +14,15 @@
         <div class="col-md-8">
             <div class="card shadow">
                 <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <h3 class="card-title mb-0"><i class="fas fa-plus me-2"></i>Добавить задачу</h3>
+                    <h3 class="card-title mb-0"><i class="fas fa-pencil me-2"></i>Изменить задачу</h3>
                     <a class="btn btn-outline-light btn-sm" href="/">
                         <i class="fas fa-arrow-left"></i> Назад
                     </a>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="/tasks/add" enctype="multipart/form-data">
+                    <form method="POST" action="/tasks/update" enctype="multipart/form-data">
+                        <input type="hidden" name="id" value="<?= $task->id() ?>">
+                        <input type="hidden" name="status" value="<?= $task->status() ?>">
                         <div class="row">
                             <div class="col-md-8 mb-3">
                                 <label for="task-name" class="form-label">Название *</label>
@@ -33,7 +35,7 @@
                                 <select class="form-select" id="task-project" name="project_id" required>
                                     <option value="">Выберите проект</option>
                                     <?php foreach ($projects as $project): ?>
-                                        <option value="<?= $project->id() ?>" <?php if ($project->id() === $task->projectId()): ?>selected<?php endif; ?>><?= $project->name() ?></option>
+                                        <option value="<?= $project->id() ?>" <?php if ($project->id() === $task->projectId()): ?>selected<?php endif; ?>><?= htmlspecialchars($project->name()) ?></option>
                                     <?php endforeach; ?>
                                 </select>
                                 <div class="error" id="task-project-error"></div>
@@ -59,7 +61,7 @@
                         </div>
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-plus me-2"></i>Добавить
+                                <i class="fas fa-floppy-disk me-2"></i>Сохранить
                             </button>
                         </div>
                     </form>
