@@ -62,6 +62,16 @@ class HomeController extends Controller
         ]);
     }
 
+    public function filter(): void
+    {
+        $this->view('home', [
+            'projects' => $this->projectService()->all(),
+            'tasks' => $this->taskService()->get([
+                'project_id' => $this->request()->input('project_id')
+            ])
+        ]);
+    }
+
     private function projectService(): ProjectService
     {
         return new ProjectService($this->db());

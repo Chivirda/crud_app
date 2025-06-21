@@ -17,6 +17,7 @@ return [
   Route::get('/tomorrow', [HomeController::class, 'tomorrow'], [GuestMiddleware::class]),
   Route::get('/overdue', [HomeController::class, 'overdue'], [GuestMiddleware::class]),
   Route::get('/done', [HomeController::class, 'done'], [GuestMiddleware::class]),
+  Route::get('/filter', [HomeController::class, 'filter'], [GuestMiddleware::class]),
 
   Route::get('/guest', [GuestController::class, 'index']),
 
