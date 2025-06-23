@@ -71,7 +71,7 @@ class Database implements DatabaseInterface
     {
         $fields = array_keys($data);
 
-        $set = implode(' ', array_map(fn ($field) => "$field = :$field", $fields));
+        $set = implode(', ', array_map(fn ($field) => "$field = :$field", $fields));
 
         $where = '';
 

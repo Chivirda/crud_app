@@ -26,7 +26,7 @@ class ProjectController extends Controller
             $this->redirectWithErrors($this->request()->errors());
         }
 
-        $this->db()->insert('projects', [
+        $this->service()->store([
             'name' => $this->request()->input('name'),
             'user_id' => $this->auth()->user()->id()
         ]);
@@ -45,7 +45,9 @@ class ProjectController extends Controller
 
     public function update(): void
     {
-        $this->service()->update($this->request()->input('id'), $this->request()->input('name'));
+        $this->service()->update($this->request()->input('id'), [
+            'name' => $this->request()->input('name')
+        ]);
 
         $this->redirect('/');
     }
