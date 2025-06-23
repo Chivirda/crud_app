@@ -1,7 +1,9 @@
 <?php
 /**
  * @var App\Kernel\View\View $view;
- * @var App\Services\ProjectService $projects;
+ * @var App\Models\Project $projects;
+ * @var App\Models\Task $tasks;
+ * @var App\Kernel\Storage\StorageInterface $storage;
  */
 ?>
 
@@ -40,7 +42,8 @@
                                             </form>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="/projects/update?id=<?= $project->id() ?>" onclick="confirmDeleteProject(1, 'Входящие', 5)">
+                                            <a class="dropdown-item" href="/projects/update?id=<?= $project->id() ?>"
+                                                onclick="confirmDeleteProject(1, 'Входящие', 5)">
                                                 <i class="fas fa-edit me-2"></i>Изменить проект
                                             </a>
                                         </li>
@@ -106,93 +109,43 @@
                     <a href="#" class="text-decoration-none">Показать выполненные</a>
                 </div>
                 <div class="card-body">
-                    <!-- Задача 1 -->
-                    <div class="task-item border rounded p-3 mb-3">
-                        <div class="d-flex align-items-center">
-                            <div class="form-check me-3">
-                                <input class="form-check-input" type="checkbox" id="task1">
-                            </div>
-                            <div class="flex-grow-1">
-                                <label class="form-check-label fw-bold" for="task1" style="cursor: pointer;">
-                                    Подготовить презентацию для клиента
-                                </label>
-                            </div>
-                            <div class="task-meta d-flex align-items-center">
-                                <i class="fas fa-paperclip text-muted me-2" title="Есть вложение"></i>
-                                <span class="badge bg-warning text-dark me-2">Сегодня</span>
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
-                                        data-bs-toggle="dropdown">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#"
-                                                onclick="confirmDeleteTask(1, 'Подготовить презентацию для клиента')">
-                                                <i class="fas fa-trash text-danger me-2"></i>Удалить задачу
-                                            </a></li>
-                                    </ul>
+                    <?php foreach ($tasks as $task): ?>
+                        <div class="task-item border rounded p-3 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="form-check me-3">
+                                    <input class="form-check-input" type="checkbox" id="task1">
+                                </div>
+                                <div class="flex-grow-1">
+                                    <label class="form-check-label fw-bold" for="task1" style="cursor: pointer;">
+                                        <?= htmlspecialchars($task->name()) ?>
+                                    </label>
+                                </div>
+                                <div class="task-meta d-flex align-items-center">
+                                    <?php if ($task->filePath()): ?>
+                                        <a href="<?= $storage->url($task->filePath()) ?>">
+                                            <i class="fas fa-paperclip text-muted me-2" title="Есть вложение"></i>
+                                    </a>
+                                    <?php endif; ?>
+                                    <span class="badge bg-warning text-dark me-2">Сегодня</span>
+                                    <span class="badge bg-info me-2">Завтра</span>
+                                    <span class="badge bg-danger me-2">Просрочено</span>
+                                    <span class="badge bg-success me-2">Выполнено</span>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
+                                            data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#"
+                                                    onclick="confirmDeleteTask(1, 'Подготовить презентацию для клиента')">
+                                                    <i class="fas fa-trash text-danger me-2"></i>Удалить задачу
+                                                </a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Задача 2 -->
-                    <div class="task-item task-overdue border rounded p-3 mb-3">
-                        <div class="d-flex align-items-center">
-                            <div class="form-check me-3">
-                                <input class="form-check-input" type="checkbox" id="task2">
-                            </div>
-                            <div class="flex-grow-1">
-                                <label class="form-check-label fw-bold" for="task2" style="cursor: pointer;">
-                                    Отправить отчет по проекту
-                                </label>
-                            </div>
-                            <div class="task-meta d-flex align-items-center">
-                                <span class="badge bg-danger me-2">Просрочено</span>
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
-                                        data-bs-toggle="dropdown">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#"
-                                                onclick="confirmDeleteTask(2, 'Отправить отчет по проекту')">
-                                                <i class="fas fa-trash text-danger me-2"></i>Удалить задачу
-                                            </a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Задача 3 -->
-                    <div class="task-item border rounded p-3 mb-3">
-                        <div class="d-flex align-items-center">
-                            <div class="form-check me-3">
-                                <input class="form-check-input" type="checkbox" id="task3">
-                            </div>
-                            <div class="flex-grow-1">
-                                <label class="form-check-label fw-bold" for="task3" style="cursor: pointer;">
-                                    Провести встречу с командой
-                                </label>
-                            </div>
-                            <div class="task-meta d-flex align-items-center">
-                                <span class="badge bg-info me-2">Завтра</span>
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
-                                        data-bs-toggle="dropdown">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#"
-                                                onclick="confirmDeleteTask(3, 'Провести встречу с командой')">
-                                                <i class="fas fa-trash text-danger me-2"></i>Удалить задачу
-                                            </a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
 
                     <!-- Выполненная задача -->
                     <div class="task-item task-completed border rounded p-3 mb-3">
@@ -207,7 +160,6 @@
                                 </label>
                             </div>
                             <div class="task-meta d-flex align-items-center">
-                                <span class="badge bg-success me-2">Выполнено</span>
                                 <div class="dropdown">
                                     <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
                                         data-bs-toggle="dropdown">
