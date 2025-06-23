@@ -18,37 +18,9 @@
                     <h5 class="mb-0"><i class="fas fa-folder me-2"></i>Проекты</h5>
                 </div>
                 <div class="card-body">
-                    <div class="list-group list-group-flush">
-                        <?php foreach ($projects as $project): ?>
-                            <div
-                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                <div>
-                                    <i class="fas fa-inbox me-2"></i><?= $project->name() ?> <span
-                                        class="badge bg-primary rounded-pill ms-2"><?= $project->activeTasksCount() ?></span>
-                                </div>
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
-                                        data-bs-toggle="dropdown">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <button class="dropdown-item"
-                                                onclick="confirmDeleteProject(<?= $project->id() ?>, '<?= $project->name() ?>', <?= $project->activeTasksCount() ?>)">
-                                                <i class="fas fa-trash text-danger me-2"></i>Удалить проект
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="/projects/update?id=<?= $project->id() ?>"
-                                                onclick="confirmDeleteProject(1, 'Входящие', 5)">
-                                                <i class="fas fa-edit me-2"></i>Изменить проект
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
+                    <?php $view->component('projects', [
+                        'projects' => $projects,
+                    ]); ?>
                     <div class="mt-3">
                         <a class="btn btn-outline-primary w-100" href="/projects/add">
                             <i class="fas fa-plus me-2"></i>Добавить проект
@@ -140,6 +112,11 @@
                                                         <i class="fas fa-trash text-danger me-2"></i>Удалить задачу
                                                     </button>
                                                 </form>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="/tasks/update?id=<?= $task->id() ?>">
+                                                    <i class="fas fa-edit me-2"></i>Изменить задачу
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>

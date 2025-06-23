@@ -32,7 +32,7 @@ abstract class AbstractService
 
     public function find(int $id): ?object
     {
-        $item = $this->db->first('projects', [
+        $item = $this->db->first($this->tableName, [
             'id' => $id
         ]);
 

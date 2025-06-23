@@ -51,6 +51,47 @@ class TaskController extends Controller
         $this->redirect('/');
     }
 
+    public function edit(): void
+    {
+        $this->view('tasks/edit', [
+            'task' => $this->service()->find($this->request()->input('id')),
+            'projects' => $this->projectService()->all()
+        ]);
+    }
+
+    public function update(): void
+    {
+        $validation = $this->request()->validate([
+            'name' => [
+                'required',
+                'min:3',
+                'max:256'
+            ],
+            'project_id' => [
+                'required',
+            ]
+        ]);
+
+        if (!$validation) {
+            $this->redirectWithErrors($this->request()->errors());
+        }
+
+        $data = [
+            'name' => $this->request()->input('name'),
+            'project_id' => $this->request()->input('project_id'),
+            'due_date' => $this->request()->input('due_date') !== '' ? $this->request()->input('due_date') : null,
+        ];
+
+        if ($this->request()->input('file') !== null) {
+            $file = $this->request()->input('file');
+            $data['file_path'] = $file->move('tasks');
+        }
+        
+        $this->service()->update($this->request()->input('id'), $data);
+
+        $this->redirect('/');
+    }
+
     public function destroy(): void
     {
         $this->service()->delete($this->request()->input('id'));
