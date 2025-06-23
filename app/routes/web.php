@@ -13,6 +13,8 @@ use App\Middleware\LoginMiddleware;
 
 return [
   Route::get('/', [HomeController::class, 'index'], [GuestMiddleware::class]),
+  Route::get('/tomorrow', [HomeController::class, 'tomorrow'], [GuestMiddleware::class]),
+
   Route::get('/guest', [GuestController::class, 'index']),
 
   Route::get('/projects/add', [ProjectController::class,'add'], [AuthMiddleware::class]),

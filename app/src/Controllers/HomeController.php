@@ -16,6 +16,16 @@ class HomeController extends Controller
         ]);
     }
 
+    public function tomorrow(): void
+    {
+        $this->view('home', [
+            'projects' => $this->projectService()->all(),
+            'tasks' => $this->taskService()->get([
+                'due_date' => (new \DateTime())->format('Y-m-d'),
+            ]),
+        ]);
+    }
+
     private function projectService(): ProjectService
     {
         return new ProjectService($this->db());

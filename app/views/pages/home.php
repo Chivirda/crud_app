@@ -4,6 +4,7 @@
  * @var App\Models\Project $projects;
  * @var App\Models\Task $tasks;
  * @var App\Kernel\Storage\StorageInterface $storage;
+ * @var App\Kernel\Http\RequestInterface $request;
  */
 ?>
 
@@ -56,12 +57,12 @@
                 <div class="card-body">
                     <ul class="nav nav-pills">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#"><i class="fas fa-list me-2"></i>Все задачи</a>
+                            <a class="nav-link <?= $request->uri() === '/' ? 'active' : '' ?>" href="/"><i class="fas fa-list me-2"></i>Все задачи</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i class="fas fa-calendar-day me-2"></i>Повестка дня</a>
                         </li>
-                        <a class="nav-link" href="#"><i class="fas fa-calendar-plus me-2"></i>Завтра</a>
+                        <a class="nav-link <?= $request->uri() === '/tomorrow' ? 'active' : '' ?>" href="/tomorrow"><i class="fas fa-calendar-plus me-2"></i>Завтра</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-danger" href="#"><i

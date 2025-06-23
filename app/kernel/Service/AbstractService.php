@@ -30,6 +30,15 @@ abstract class AbstractService
         }, $items);
     }
 
+    public function get(array $conditions = []): array
+    {
+        $items = $this->db->get($this->tableName, $conditions);
+
+        return array_map(function ($item) {
+            return $this->createModel($item);
+        }, $items);
+    }
+
     public function find(int $id): ?object
     {
         $item = $this->db->first($this->tableName, [
