@@ -51,6 +51,13 @@ class TaskController extends Controller
         $this->redirect('/');
     }
 
+    public function destroy(): void
+    {
+        $this->service()->delete($this->request()->input('id'));
+
+        $this->redirect('/');
+    }
+
     private function projectService(): ProjectService
     {
         return new ProjectService($this->db());

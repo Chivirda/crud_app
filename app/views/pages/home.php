@@ -33,13 +33,10 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <form action="/projects/delete" method="post">
-                                                <input type="hidden" name="id" value="<?= $project->id() ?>">
-                                                <button class="dropdown-item"
-                                                    onclick="confirmDeleteProject(1, 'Входящие', 5)">
-                                                    <i class="fas fa-trash text-danger me-2"></i>Удалить проект
-                                                </button>
-                                            </form>
+                                            <button class="dropdown-item"
+                                                onclick="confirmDeleteProject(<?= $project->id() ?>, '<?= $project->name() ?>', <?= $project->activeTasksCount() ?>)">
+                                                <i class="fas fa-trash text-danger me-2"></i>Удалить проект
+                                            </button>
                                         </li>
                                         <li>
                                             <a class="dropdown-item" href="/projects/update?id=<?= $project->id() ?>"
@@ -124,7 +121,7 @@
                                     <?php if ($task->filePath()): ?>
                                         <a href="<?= $storage->url($task->filePath()) ?>">
                                             <i class="fas fa-paperclip text-muted me-2" title="Есть вложение"></i>
-                                    </a>
+                                        </a>
                                     <?php endif; ?>
                                     <span class="badge bg-warning text-dark me-2">Сегодня</span>
                                     <span class="badge bg-info me-2">Завтра</span>
@@ -136,10 +133,14 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="#"
-                                                    onclick="confirmDeleteTask(1, 'Подготовить презентацию для клиента')">
-                                                    <i class="fas fa-trash text-danger me-2"></i>Удалить задачу
-                                                </a></li>
+                                            <li>
+                                                <form action="/tasks/delete" method="POST">
+                                                    <input type="hidden" name="id" value="<?= $task->id() ?>">
+                                                    <button class="dropdown-item">
+                                                        <i class="fas fa-trash text-danger me-2"></i>Удалить задачу
+                                                    </button>
+                                                </form>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -181,5 +182,35 @@
     </div>
 </div>
 </div>
+
+<!-- Модальное окно удаления проекта -->
+<div class="modal fade" id="deleteProjectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-exclamation-triangle text-warning me-2"></i>Подтверждение
+                    удаления</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Внимание!</strong> При удалении проекта будут удалены все связанные с ним задачи.
+                </div>
+                <p>Вы уверены, что хотите удалить проект <strong id="projectNameToDelete"></strong>?</p>
+                <p class="text-muted">Количество задач, которые будут удалены: <span id="tasksCountToDelete"
+                        class="fw-bold"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-danger" onclick="deleteProject()">
+                    <i class="fas fa-trash me-2"></i>Удалить проект
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/app.js"></script>
 
 <?php $view->component('end'); ?>
