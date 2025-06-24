@@ -87,12 +87,10 @@ class TaskController extends Controller
             'user_id' => $this->auth()->user()->id()
         ];
 
-        if ($this->request()->input('file') !== null) {
+        if ($this->request()->file('file') !== null) {
             $file = $this->request()->file('file');
             $data['file_path'] = $file->move('tasks');
         }
-
-        // dd($data);
 
         $this->service()->update($this->request()->input('id'), $data);
 
