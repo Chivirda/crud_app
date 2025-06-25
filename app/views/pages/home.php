@@ -60,12 +60,12 @@
                             <a class="nav-link <?= $request->uri() === '/' ? 'active' : '' ?>" href="/"><i class="fas fa-list me-2"></i>Все задачи</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-calendar-day me-2"></i>Повестка дня</a>
+                            <a class="nav-link <?= $request->uri() === '/today' ? 'active' : '' ?>" href="/today"><i class="fas fa-calendar-day me-2"></i>Повестка дня</a>
                         </li>
                         <a class="nav-link <?= $request->uri() === '/tomorrow' ? 'active' : '' ?>" href="/tomorrow"><i class="fas fa-calendar-plus me-2"></i>Завтра</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-danger" href="#"><i
+                            <a class="nav-link  <?= $request->uri() === '/overdue' ? 'active' : '' ?> text-danger" href="/overdue"><i
                                     class="fas fa-exclamation-triangle me-2"></i>Просроченные</a>
                         </li>
                     </ul>
@@ -76,7 +76,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Входящие</h5>
-                    <a href="#" class="text-decoration-none">Показать выполненные</a>
+                    <a href="/done" class="text-decoration-none">Показать выполненные</a>
                 </div>
                 <div class="card-body">
                     <?php foreach ($tasks as $task): ?>

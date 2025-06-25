@@ -82,8 +82,8 @@ class TaskController extends Controller
             'due_date' => $this->request()->input('due_date') !== '' ? $this->request()->input('due_date') : null,
         ];
 
-        if ($this->request()->input('file') !== null) {
-            $file = $this->request()->input('file');
+        if ($this->request()->file('file') !== null) {
+            $file = $this->request()->file('file');
             $data['file_path'] = $file->move('tasks');
         }
         

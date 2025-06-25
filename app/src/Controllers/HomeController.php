@@ -16,12 +16,48 @@ class HomeController extends Controller
         ]);
     }
 
+    public function today(): void
+    {
+        $this->view('home', [
+            'projects' => $this->projectService()->all(),
+            'tasks' => $this->taskService()->get([
+                'due_date' => (new \DateTime('today'))->format('Y-m-d'),
+            ]),
+        ]);
+    }
+
     public function tomorrow(): void
     {
         $this->view('home', [
             'projects' => $this->projectService()->all(),
             'tasks' => $this->taskService()->get([
-                'due_date' => (new \DateTime())->format('Y-m-d'),
+                'due_date' => (new \DateTime('tomorrow'))->format('Y-m-d'),
+            ]),
+        ]);
+    }
+
+    public function overdue(): void
+    {
+        $overdueTasks = [];
+
+        foreach ($this->taskService()->all() as $task) {
+            if ($task->dueDate() < ((new \DateTime())->format('Y-m-d'))) {
+                $overdueTasks[] = $task;
+            }
+        }
+
+        $this->view('home', [
+            'projects' => $this->projectService()->all(),
+            'tasks' => $overdueTasks,
+        ]);
+    }
+
+    public function done(): void
+    {
+        $this->view('home', [
+            'projects' => $this->projectService()->all(),
+            'tasks' => $this->taskService()->get([
+                'status' => 1
             ]),
         ]);
     }
