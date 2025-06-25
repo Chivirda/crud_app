@@ -52,110 +52,124 @@
                 </div>
             </div>
 
-            <!-- Фильтры -->
-            <div class="card mb-3">
-                <div class="card-body">
-                    <ul class="nav nav-pills">
-                        <li class="nav-item">
-                            <a class="nav-link <?= $request->uri() === '/' ? 'active' : '' ?>" href="/"><i class="fas fa-list me-2"></i>Все задачи</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link <?= $request->uri() === '/today' ? 'active' : '' ?>" href="/today"><i class="fas fa-calendar-day me-2"></i>Повестка дня</a>
-                        </li>
-                        <a class="nav-link <?= $request->uri() === '/tomorrow' ? 'active' : '' ?>" href="/tomorrow"><i class="fas fa-calendar-plus me-2"></i>Завтра</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link  <?= $request->uri() === '/overdue' ? 'active' : '' ?> text-danger" href="/overdue"><i
-                                    class="fas fa-exclamation-triangle me-2"></i>Просроченные</a>
-                        </li>
-                    </ul>
+            <?php if ($request->uri() == '/filter'): ?>
+                <!-- Фильтры -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link <?= $request->uri() === '/' ? 'active' : '' ?>" href="/"><i
+                                        class="fas fa-list me-2"></i>Все задачи</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link <?= $request->uri() === '/today' ? 'active' : '' ?>" href="/today"><i
+                                        class="fas fa-calendar-day me-2"></i>Повестка дня</a>
+                            </li>
+                            <a class="nav-link <?= $request->uri() === '/tomorrow' ? 'active' : '' ?>" href="/tomorrow"><i
+                                    class="fas fa-calendar-plus me-2"></i>Завтра</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  <?= $request->uri() === '/overdue' ? 'active' : '' ?> text-danger"
+                                    href="/overdue"><i class="fas fa-exclamation-triangle me-2"></i>Просроченные</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Блок задач -->
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Входящие</h5>
-                    <a href="/done" class="text-decoration-none">Показать выполненные</a>
-                </div>
-                <div class="card-body">
-                    <?php foreach ($tasks as $task): ?>
-                        <div class="task-item border rounded p-3 mb-3">
+                <!-- Блок задач -->
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Входящие</h5>
+                        <a href="/done" class="text-decoration-none">Показать выполненные</a>
+                    </div>
+                    <div class="card-body">
+                        <?php foreach ($tasks as $task): ?>
+                            <div class="task-item border rounded p-3 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="form-check me-3">
+                                        <input class="form-check-input" type="checkbox" id="task1">
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <label class="form-check-label fw-bold" for="task1" style="cursor: pointer;">
+                                            <?= htmlspecialchars($task->name()) ?>
+                                        </label>
+                                    </div>
+                                    <div class="task-meta d-flex align-items-center">
+                                        <?php if ($task->filePath()): ?>
+                                            <a href="<?= $storage->url($task->filePath()) ?>">
+                                                <i class="fas fa-paperclip text-muted me-2" title="Есть вложение"></i>
+                                            </a>
+                                        <?php endif; ?>
+                                        <span class="badge bg-warning text-dark me-2">Сегодня</span>
+                                        <span class="badge bg-info me-2">Завтра</span>
+                                        <span class="badge bg-danger me-2">Просрочено</span>
+                                        <span class="badge bg-success me-2">Выполнено</span>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <form action="/tasks/delete" method="POST">
+                                                        <input type="hidden" name="id" value="<?= $task->id() ?>">
+                                                        <button class="dropdown-item">
+                                                            <i class="fas fa-trash text-danger me-2"></i>Удалить задачу
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="/tasks/update?id=<?= $task->id() ?>">
+                                                        <i class="fas fa-edit me-2"></i>Изменить задачу
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+
+                        <!-- Выполненная задача -->
+                        <div class="task-item task-completed border rounded p-3 mb-3">
                             <div class="d-flex align-items-center">
                                 <div class="form-check me-3">
-                                    <input class="form-check-input" type="checkbox" id="task1">
+                                    <input class="form-check-input" type="checkbox" id="task4" checked>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <label class="form-check-label fw-bold" for="task1" style="cursor: pointer;">
-                                        <?= htmlspecialchars($task->name()) ?>
+                                    <label class="form-check-label text-decoration-line-through" for="task4"
+                                        style="cursor: pointer;">
+                                        Купить продукты
                                     </label>
                                 </div>
                                 <div class="task-meta d-flex align-items-center">
-                                    <?php if ($task->filePath()): ?>
-                                        <a href="<?= $storage->url($task->filePath()) ?>">
-                                            <i class="fas fa-paperclip text-muted me-2" title="Есть вложение"></i>
-                                        </a>
-                                    <?php endif; ?>
-                                    <span class="badge bg-warning text-dark me-2">Сегодня</span>
-                                    <span class="badge bg-info me-2">Завтра</span>
-                                    <span class="badge bg-danger me-2">Просрочено</span>
-                                    <span class="badge bg-success me-2">Выполнено</span>
                                     <div class="dropdown">
                                         <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
                                             data-bs-toggle="dropdown">
                                             <i class="fas fa-ellipsis-v"></i>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li>
-                                                <form action="/tasks/delete" method="POST">
-                                                    <input type="hidden" name="id" value="<?= $task->id() ?>">
-                                                    <button class="dropdown-item">
-                                                        <i class="fas fa-trash text-danger me-2"></i>Удалить задачу
-                                                    </button>
-                                                </form>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href="/tasks/update?id=<?= $task->id() ?>">
-                                                    <i class="fas fa-edit me-2"></i>Изменить задачу
-                                                </a>
-                                            </li>
+                                            <li><a class="dropdown-item" href="#" '/tomorrow'
+                                                    onclick="confirmDeleteTask(4, 'Купить продукты')">
+                                                    <i class="fas fa-trash text-danger me-2"></i>Удалить задачу
+                                                </a></li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    <?php endforeach; ?>
-
-                    <!-- Выполненная задача -->
-                    <div class="task-item task-completed border rounded p-3 mb-3">
-                        <div class="d-flex align-items-center">
-                            <div class="form-check me-3">
-                                <input class="form-check-input" type="checkbox" id="task4" checked>
-                            </div>
-                            <div class="flex-grow-1">
-                                <label class="form-check-label text-decoration-line-through" for="task4"
-                                    style="cursor: pointer;">
-                                    Купить продукты
-                                </label>
-                            </div>
-                            <div class="task-meta d-flex align-items-center">
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
-                                        data-bs-toggle="dropdown">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#"
-                                                onclick="confirmDeleteTask(4, 'Купить продукты')">
-                                                <i class="fas fa-trash text-danger me-2"></i>Удалить задачу
-                                            </a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
-            </div>
+            <?php else: ?>
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3>Не выбран проект</h3>
+                    </div>
+                    <div class="card-body">
+                        Пожалуйста, выберите проект из списка слева
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>

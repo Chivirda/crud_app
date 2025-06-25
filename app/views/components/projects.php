@@ -6,11 +6,13 @@
 
 <div class="list-group list-group-flush">
     <?php foreach ($projects as $project): ?>
-        <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-            <div>
-                <i class="fas fa-inbox me-2"></i><?= htmlspecialchars($project->name()) ?> <span
-                    class="badge bg-primary rounded-pill ms-2"><?= $project->activeTasksCount() ?></span>
-            </div>
+        <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center <?= $request->input('project') == $project->id() ? 'active' : '' ?>">
+            <a href="/filter?project=<?= $project->id()?>" class="text-decoration-none <?= $request->input('project') == $project->id() ? 'text-light' : 'text-dark' ?>">
+                <div>
+                    <i class="fas fa-inbox me-2"></i><?= htmlspecialchars($project->name()) ?> <span
+                        class="badge bg-primary rounded-pill ms-2"><?= $project->activeTasksCount() ?></span>
+                </div>
+            </a>
             <div class="dropdown">
                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                     <i class="fas fa-ellipsis-v"></i>
