@@ -92,6 +92,18 @@ class TaskController extends Controller
         $this->redirect('/');
     }
 
+    public function done(): void
+    {
+        $this->service()->update($this->request()->input('id'), ['status' => 1]);
+        $this->redirect('/');
+    }
+
+    public function undone(): void
+    {
+        $this->service()->update($this->request()->input('id'), ['status' => 0]);
+        $this->redirect('/');
+    }
+
     public function destroy(): void
     {
         $this->service()->delete($this->request()->input('id'));

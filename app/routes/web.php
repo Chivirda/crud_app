@@ -31,6 +31,8 @@ return [
   Route::get('/tasks/update', [TaskController::class,'edit'], [AuthMiddleware::class]),
   Route::post('/tasks/update', [TaskController::class,'update'], [AuthMiddleware::class]),
   Route::post('/tasks/delete', [TaskController::class,'destroy'], [AuthMiddleware::class]),
+  Route::post('/tasks/done', [TaskController::class,'done'], [AuthMiddleware::class]),
+  Route::post('/tasks/undone', [TaskController::class,'undone'], [AuthMiddleware::class]),
 
   Route::get('/register', [RegisterController::class,'index'], [LoginMiddleware::class]),
   Route::post('/register', [RegisterController::class,'register']),

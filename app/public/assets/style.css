@@ -31,3 +31,9 @@
 .success {
   color: green;
 }
+
+.task__submit {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}

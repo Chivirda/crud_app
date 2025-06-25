@@ -63,4 +63,19 @@ class Task
     {
         return $this->status === 0;
     }
+
+    public function today(): bool
+    {
+        return $this->dueDate() === (new \DateTime('today'))->format('Y-m-d');
+    }
+
+    public function tomorrow(): bool
+    {
+        return $this->dueDate() === (new \DateTime('tomorrow'))->format('Y-m-d');
+    }
+
+    public function overdue(): bool
+    {
+        return $this->dueDate() < ((new \DateTime())->format('Y-m-d'));
+    }
 }
