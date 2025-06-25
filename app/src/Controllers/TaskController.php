@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Kernel\Controller\Controller;
 use App\Services\ProjectService;
 use App\Services\TaskService;
+use App\Services\TaskService;
 
 class TaskController extends Controller
 {
@@ -53,12 +54,9 @@ class TaskController extends Controller
 
     public function edit(): void
     {
-        $task = $this->service()->find($this->request()->input('id'));
-        $projects = $this->projectService()->all();
-
         $this->view('tasks/edit', [
-            'task' => $task,
-            'projects' => $projects
+            'task' => $this->service()->find($this->request()->input('id')),
+            'projects' => $this->projectService()->all()
         ]);
     }
 
@@ -83,16 +81,33 @@ class TaskController extends Controller
             'name' => $this->request()->input('name'),
             'project_id' => $this->request()->input('project_id'),
             'due_date' => $this->request()->input('due_date') !== '' ? $this->request()->input('due_date') : null,
-            'status' => $this->request()->input('status'),
-            'user_id' => $this->auth()->user()->id()
         ];
 
         if ($this->request()->file('file') !== null) {
             $file = $this->request()->file('file');
             $data['file_path'] = $file->move('tasks');
         }
-
+        
         $this->service()->update($this->request()->input('id'), $data);
+
+        $this->redirect('/');
+    }
+
+    public function done(): void
+    {
+        $this->service()->update($this->request()->input('id'), ['status' => 1]);
+        $this->redirect('/');
+    }
+
+    public function undone(): void
+    {
+        $this->service()->update($this->request()->input('id'), ['status' => 0]);
+        $this->redirect('/');
+    }
+
+    public function destroy(): void
+    {
+        $this->service()->delete($this->request()->input('id'));
 
         $this->redirect('/');
     }

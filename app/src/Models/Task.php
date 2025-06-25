@@ -10,14 +10,13 @@ class Task
         private int $id,
         private string $name,
         private int $status,
-        private string $dueDate,
+        private ?string $dueDate,
         private ?string $filePath,
         private int $userId,
         private int $projectId,
         private string $createdAt,
         private DatabaseInterface $db
-    ) {
-    }
+    ) {}
 
     public function id(): int
     {
@@ -34,7 +33,7 @@ class Task
         return $this->status;
     }
 
-    public function dueDate(): string
+    public function dueDate(): ?string
     {
         return $this->dueDate;
     }
@@ -62,5 +61,20 @@ class Task
     public function isActive(): bool
     {
         return $this->status === 0;
+    }
+
+    public function today(): bool
+    {
+        return $this->dueDate() === (new \DateTime('today'))->format('Y-m-d');
+    }
+
+    public function tomorrow(): bool
+    {
+        return $this->dueDate() === (new \DateTime('tomorrow'))->format('Y-m-d');
+    }
+
+    public function overdue(): bool
+    {
+        return $this->dueDate() < ((new \DateTime())->format('Y-m-d'));
     }
 }

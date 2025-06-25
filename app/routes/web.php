@@ -17,7 +17,6 @@ return [
   Route::get('/tomorrow', [HomeController::class, 'tomorrow'], [GuestMiddleware::class]),
   Route::get('/overdue', [HomeController::class, 'overdue'], [GuestMiddleware::class]),
   Route::get('/done', [HomeController::class, 'done'], [GuestMiddleware::class]),
-  Route::get('/filter', [HomeController::class, 'filter'], [GuestMiddleware::class]),
 
   Route::get('/guest', [GuestController::class, 'index']),
 
@@ -32,6 +31,8 @@ return [
   Route::get('/tasks/update', [TaskController::class,'edit'], [AuthMiddleware::class]),
   Route::post('/tasks/update', [TaskController::class,'update'], [AuthMiddleware::class]),
   Route::post('/tasks/delete', [TaskController::class,'destroy'], [AuthMiddleware::class]),
+  Route::post('/tasks/done', [TaskController::class,'done'], [AuthMiddleware::class]),
+  Route::post('/tasks/undone', [TaskController::class,'undone'], [AuthMiddleware::class]),
 
   Route::get('/register', [RegisterController::class,'index'], [LoginMiddleware::class]),
   Route::post('/register', [RegisterController::class,'register']),

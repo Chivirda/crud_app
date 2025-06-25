@@ -1,4 +1,9 @@
-<?php /** @var \App\Models\Project[] $projects */ ?>
+<?php
+
+/**
+ * @var App\Models\Project $projects;
+ */
+?>
 
 <div class="list-group list-group-flush">
     <?php foreach ($projects as $project): ?>

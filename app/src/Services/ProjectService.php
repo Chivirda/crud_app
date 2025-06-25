@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Kernel\Service\AbstractService;
+use App\Kernel\Service\AbstractService;
 use App\Models\Project;
 
 class ProjectService extends AbstractService
@@ -11,9 +12,9 @@ class ProjectService extends AbstractService
     {
         $this->modelClass = Project::class;
         $this->tableName = 'projects';
-        $this->modelConstrutorArgs = [
+        $this->modelConstructorArgs = [
             'id' => 'id',
-            'name' => 'name',
+            'name'=> 'name',
             'userId' => 'user_id',
             'createdAt' => 'created_at',
             'db' => ':db'

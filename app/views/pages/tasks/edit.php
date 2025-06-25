@@ -2,8 +2,8 @@
 /**
  * @var App\Kernel\View\View $view;
  * @var App\Kernel\Session\Session $session;
- * @var App\Services\ProjectService $projects;
- * @var \App\Models\Task $task;
+ * @var array<App\Models\Project> $projects;
+ * @var App\Models\Task $task;
  */
 ?>
 
@@ -14,7 +14,7 @@
         <div class="col-md-8">
             <div class="card shadow">
                 <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <h3 class="card-title mb-0"><i class="fas fa-pencil me-2"></i>Изменить задачу</h3>
+                    <h3 class="card-title mb-0"><i class="fas fa-pencil me-2"></i>Редактировать задачу</h3>
                     <a class="btn btn-outline-light btn-sm" href="/">
                         <i class="fas fa-arrow-left"></i> Назад
                     </a>
@@ -22,12 +22,11 @@
                 <div class="card-body">
                     <form method="POST" action="/tasks/update" enctype="multipart/form-data">
                         <input type="hidden" name="id" value="<?= $task->id() ?>">
-                        <input type="hidden" name="status" value="<?= $task->status() ?>">
                         <div class="row">
                             <div class="col-md-8 mb-3">
                                 <label for="task-name" class="form-label">Название *</label>
                                 <input type="text" class="form-control" id="task-name" name="name"
-                                    placeholder="Введите название задачи" value="<?= $task->name() ?>" required>
+                                    placeholder="Введите название задачи" required value="<?= htmlspecialchars($task->name()) ?>">
                                 <div class="error" id="task-name-error"></div>
                             </div>
                             <div class="col-md-4 mb-3">
@@ -35,7 +34,7 @@
                                 <select class="form-select" id="task-project" name="project_id" required>
                                     <option value="">Выберите проект</option>
                                     <?php foreach ($projects as $project): ?>
-                                        <option value="<?= $project->id() ?>" <?php if ($project->id() === $task->projectId()): ?>selected<?php endif; ?>><?= htmlspecialchars($project->name()) ?></option>
+                                        <option value="<?= $project->id() ?>" <?php if($project->id() === $task->projectId()): ?>selected<?php endif; ?>><?= htmlspecialchars($project->name()) ?></option>
                                     <?php endforeach; ?>
                                 </select>
                                 <div class="error" id="task-project-error"></div>
@@ -61,7 +60,7 @@
                         </div>
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-floppy-disk me-2"></i>Сохранить
+                                <i class="fas fa-save me-2"></i>Сохранить
                             </button>
                         </div>
                     </form>

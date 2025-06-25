@@ -42,7 +42,7 @@ class View implements ViewInterface
 
         extract(array_merge($this->defaultData(), $data));
 
-        include_once $componentPath;
+        include $componentPath;
     }
 
     private function defaultData(): array

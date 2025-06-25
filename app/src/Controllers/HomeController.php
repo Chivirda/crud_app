@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Kernel\Controller\Controller;
 use App\Services\ProjectService;
 use App\Services\TaskService;
+use App\Services\TaskService;
 
 class HomeController extends Controller
 {
@@ -12,7 +13,7 @@ class HomeController extends Controller
     {
         $this->view('home', [
             'projects' => $this->projectService()->all(),
-            'tasks' => $this->taskService()->all()
+            'tasks' => $this->taskService()->all(),
         ]);
     }
 
@@ -21,8 +22,8 @@ class HomeController extends Controller
         $this->view('home', [
             'projects' => $this->projectService()->all(),
             'tasks' => $this->taskService()->get([
-                'due_date' => (new \DateTime('today'))->format('Y-m-d')
-            ])
+                'due_date' => (new \DateTime('today'))->format('Y-m-d'),
+            ]),
         ]);
     }
 
@@ -31,24 +32,24 @@ class HomeController extends Controller
         $this->view('home', [
             'projects' => $this->projectService()->all(),
             'tasks' => $this->taskService()->get([
-                'due_date' => (new \DateTime('tomorrow'))->format('Y-m-d')
-            ])
+                'due_date' => (new \DateTime('tomorrow'))->format('Y-m-d'),
+            ]),
         ]);
     }
 
     public function overdue(): void
     {
-        $overduetTasks = [];
+        $overdueTasks = [];
 
         foreach ($this->taskService()->all() as $task) {
-            if ($task->dueDate() < (new \DateTime())->format('Y-m-d')) {
-                $overduetTasks[] = $task;
+            if ($task->dueDate() < ((new \DateTime())->format('Y-m-d'))) {
+                $overdueTasks[] = $task;
             }
         }
 
         $this->view('home', [
             'projects' => $this->projectService()->all(),
-            'tasks' => $overduetTasks
+            'tasks' => $overdueTasks,
         ]);
     }
 
@@ -58,17 +59,7 @@ class HomeController extends Controller
             'projects' => $this->projectService()->all(),
             'tasks' => $this->taskService()->get([
                 'status' => 1
-            ])
-        ]);
-    }
-
-    public function filter(): void
-    {
-        $this->view('home', [
-            'projects' => $this->projectService()->all(),
-            'tasks' => $this->taskService()->get([
-                'project_id' => $this->request()->input('project_id')
-            ])
+            ]),
         ]);
     }
 

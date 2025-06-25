@@ -7,11 +7,11 @@ use App\Models\Task;
 
 class TaskService extends AbstractService
 {
-    protected function initialize(): void
+    public function initialize(): void
     {
         $this->modelClass = Task::class;
         $this->tableName = 'tasks';
-        $this->modelConstrutorArgs = [
+        $this->modelConstructorArgs = [
             'id' => 'id',
             'name' => 'name',
             'status' => 'status',
@@ -19,7 +19,7 @@ class TaskService extends AbstractService
             'filePath' => 'file_path',
             'userId' => 'user_id',
             'projectId' => 'project_id',
-            'createdAt' => 'created_at',
+            'createdAt' => 'creatged_at',
             'db' => ':db'
         ];
     }
