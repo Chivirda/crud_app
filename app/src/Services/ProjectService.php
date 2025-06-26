@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Kernel\Service\AbstractService;
-use App\Kernel\Service\AbstractService;
 use App\Models\Project;
 
 class ProjectService extends AbstractService

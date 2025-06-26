@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Kernel\Controller\Controller;
 use App\Services\ProjectService;
 use App\Services\TaskService;
-use App\Services\TaskService;
 
 class TaskController extends Controller
 {
@@ -49,7 +48,7 @@ class TaskController extends Controller
             $this->redirectWithErrors(['file' => $taskId]);
         }
 
-        $this->redirect('/');
+        $this->redirect('/?project=' . $this->request()->input('project_id'));
     }
 
     public function edit(): void
@@ -87,29 +86,33 @@ class TaskController extends Controller
             $file = $this->request()->file('file');
             $data['file_path'] = $file->move('tasks');
         }
-        
+
         $this->service()->update($this->request()->input('id'), $data);
 
-        $this->redirect('/');
+        $this->redirect('/?project=' . $this->service()->find($this->request()->input('id'))->projectId());
+
     }
 
     public function done(): void
     {
         $this->service()->update($this->request()->input('id'), ['status' => 1]);
-        $this->redirect('/');
+        $this->redirect('/?project=' . $this->service()->find($this->request()->input('id'))->projectId());
     }
 
     public function undone(): void
     {
         $this->service()->update($this->request()->input('id'), ['status' => 0]);
-        $this->redirect('/');
+        $this->redirect('/?project=' . $this->service()->find($this->request()->input('id'))->projectId());
+
     }
 
     public function destroy(): void
     {
+        $projectId = $this->service()->find($this->request()->input('id'))->projectId();
+
         $this->service()->delete($this->request()->input('id'));
 
-        $this->redirect('/');
+        $this->redirect('/?project=' . $projectId);
     }
 
     private function projectService(): ProjectService

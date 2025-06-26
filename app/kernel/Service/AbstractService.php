@@ -8,7 +8,7 @@ abstract class AbstractService
 {
     protected string $modelClass;
     protected string $tableName;
-    protected array $modelConstrutorArgs = [];
+    protected array $modelConstructorArgs = [];
 
     public function __construct(
         private DatabaseInterface $db
@@ -70,7 +70,7 @@ abstract class AbstractService
     protected function createModel(array $data): object
     {
         $args = [];
-        foreach ($this->modelConstrutorArgs as $key => $value) {
+        foreach ($this->modelConstructorArgs as $key => $value) {
             if ($value === ':db') {
                 $args[$key] = $this->db;
             } elseif (array_key_exists($value, $data)) {

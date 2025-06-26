@@ -57,19 +57,19 @@
                 <div class="card-body">
                     <ul class="nav nav-pills">
                         <li class="nav-item">
-                            <a class="nav-link <?= $request->uri() === '/' ? 'active' : '' ?>" href="/"><i
+                            <a class="nav-link <?= $request->uri() === '/' ? 'active' : '' ?>" href="/?project=<?= $request->input('project') ?>"><i
                                     class="fas fa-list me-2"></i>Все задачи</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link <?= $request->uri() === '/today' ? 'active' : '' ?>" href="/today"><i
+                            <a class="nav-link <?= $request->uri() === '/today' ? 'active' : '' ?>" href="/today?project=<?= $request->input('project') ?>"><i
                                     class="fas fa-calendar-day me-2"></i>Повестка дня</a>
                         </li>
-                        <a class="nav-link <?= $request->uri() === '/tomorrow' ? 'active' : '' ?>" href="/tomorrow"><i
+                        <a class="nav-link <?= $request->uri() === '/tomorrow' ? 'active' : '' ?>" href="/tomorrow?project=<?= $request->input('project') ?>"><i
                                 class="fas fa-calendar-plus me-2"></i>Завтра</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link  <?= $request->uri() === '/overdue' ? 'active' : '' ?> text-danger"
-                                href="/overdue"><i class="fas fa-exclamation-triangle me-2"></i>Просроченные</a>
+                                href="/overdue?project=<?= $request->input('project') ?>"><i class="fas fa-exclamation-triangle me-2"></i>Просроченные</a>
                         </li>
                     </ul>
                 </div>

@@ -5,15 +5,27 @@ namespace App\Controllers;
 use App\Kernel\Controller\Controller;
 use App\Services\ProjectService;
 use App\Services\TaskService;
-use App\Services\TaskService;
 
 class HomeController extends Controller
 {
     public function index(): void
     {
+        $projectId = $this->request()->input('project');
+
+        if ($projectId) {
+            $this->view('home', [
+                'projects' => $this->projectService()->all(),
+                'tasks' => $this->taskService()->get([
+                    'project_id' => $projectId
+                ]),
+            ]);
+        }
+        
         $this->view('home', [
             'projects' => $this->projectService()->all(),
-            'tasks' => $this->taskService()->all(),
+            'tasks' => $this->taskService()->get([
+                'project_id' => $this->projectService()->all()[0]->id()
+            ]),
         ]);
     }
 
@@ -23,6 +35,7 @@ class HomeController extends Controller
             'projects' => $this->projectService()->all(),
             'tasks' => $this->taskService()->get([
                 'due_date' => (new \DateTime('today'))->format('Y-m-d'),
+                'project_id' => $this->request()->input('project')
             ]),
         ]);
     }
@@ -33,6 +46,7 @@ class HomeController extends Controller
             'projects' => $this->projectService()->all(),
             'tasks' => $this->taskService()->get([
                 'due_date' => (new \DateTime('tomorrow'))->format('Y-m-d'),
+                'project_id' => $this->request()->input('project')
             ]),
         ]);
     }
@@ -41,7 +55,9 @@ class HomeController extends Controller
     {
         $overdueTasks = [];
 
-        foreach ($this->taskService()->all() as $task) {
+        foreach ($this->taskService()->get([
+            'project_id' => $this->request()->input('project')
+        ]) as $task) {
             if ($task->dueDate() < ((new \DateTime())->format('Y-m-d'))) {
                 $overdueTasks[] = $task;
             }
