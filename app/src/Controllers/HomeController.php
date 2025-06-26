@@ -14,17 +14,23 @@ class HomeController extends Controller
 
         if ($projectId) {
             $this->view('home', [
-                'projects' => $this->projectService()->all(),
+                'projects' => $this->projectService()->get([
+                    'user_id' => $this->auth()->user()->id()
+                ]),
                 'tasks' => $this->taskService()->get([
-                    'project_id' => $projectId
+                    'project_id' => $projectId,
+                    'user_id' => $this->auth()->user()->id()
                 ]),
             ]);
         }
         
         $this->view('home', [
-            'projects' => $this->projectService()->all(),
+            'projects' => $this->projectService()->get([
+                'user_id' => $this->auth()->user()->id()
+            ]),
             'tasks' => $this->taskService()->get([
-                'project_id' => $this->projectService()->all()[0]->id()
+                'project_id' => $this->projectService()->all()[0]->id(),
+                'user_id' => $this->auth()->user()->id()
             ]),
         ]);
     }
@@ -32,10 +38,13 @@ class HomeController extends Controller
     public function today(): void
     {
         $this->view('home', [
-            'projects' => $this->projectService()->all(),
+            'projects' => $this->projectService()->get([
+                'user_id' => $this->auth()->user()->id()
+            ]),
             'tasks' => $this->taskService()->get([
                 'due_date' => (new \DateTime('today'))->format('Y-m-d'),
-                'project_id' => $this->request()->input('project')
+                'project_id' => $this->request()->input('project'),
+                'user_id' => $this->auth()->user()->id()
             ]),
         ]);
     }
@@ -43,10 +52,13 @@ class HomeController extends Controller
     public function tomorrow(): void
     {
         $this->view('home', [
-            'projects' => $this->projectService()->all(),
+            'projects' => $this->projectService()->get([
+                'user_id' => $this->auth()->user()->id()
+            ]),
             'tasks' => $this->taskService()->get([
                 'due_date' => (new \DateTime('tomorrow'))->format('Y-m-d'),
-                'project_id' => $this->request()->input('project')
+                'project_id' => $this->request()->input('project'),
+                'user_id' => $this->auth()->user()->id()
             ]),
         ]);
     }
@@ -56,7 +68,8 @@ class HomeController extends Controller
         $overdueTasks = [];
 
         foreach ($this->taskService()->get([
-            'project_id' => $this->request()->input('project')
+            'project_id' => $this->request()->input('project'),
+            'user_id' => $this->auth()->user()->id()
         ]) as $task) {
             if ($task->dueDate() < ((new \DateTime())->format('Y-m-d'))) {
                 $overdueTasks[] = $task;
@@ -64,7 +77,9 @@ class HomeController extends Controller
         }
 
         $this->view('home', [
-            'projects' => $this->projectService()->all(),
+            'projects' => $this->projectService()->get([
+                'user_id' => $this->auth()->user()->id()
+            ]),
             'tasks' => $overdueTasks,
         ]);
     }
@@ -72,9 +87,12 @@ class HomeController extends Controller
     public function done(): void
     {
         $this->view('home', [
-            'projects' => $this->projectService()->all(),
+            'projects' => $this->projectService()->get([
+                'user_id' => $this->auth()->user()->id()
+            ]),
             'tasks' => $this->taskService()->get([
-                'status' => 1
+                'status' => 1,
+                'user_id' => $this->auth()->user()->id()
             ]),
         ]);
     }

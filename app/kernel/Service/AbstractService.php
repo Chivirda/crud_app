@@ -39,10 +39,11 @@ abstract class AbstractService
         }, $items);
     }
 
-    public function find(int $id): ?object
+    public function find(int $id, int $userId): ?object
     {
         $item = $this->db->first($this->tableName, [
-            'id' => $id
+            'id' => $id,
+            'user_id' => $userId
         ]);
 
         return $item ? $this->createModel($item) : null;

@@ -36,7 +36,7 @@ class ProjectController extends Controller
 
     public function edit(): void
     {
-        $project = $this->service()->find($this->request()->input('id'));
+        $project = $this->service()->find($this->request()->input('id'), $this->auth()->user()->id());
 
         $this->view('projects/edit', [
             'project' => $project

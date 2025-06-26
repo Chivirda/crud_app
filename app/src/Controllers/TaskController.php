@@ -10,7 +10,9 @@ class TaskController extends Controller
 {
     public function add(): void
     {
-        $projects = $this->projectService()->all();
+        $projects = $this->projectService()->get([
+            'user_id' => $this->auth()->user()->id()
+        ]);
 
         $this->view('tasks/add', [
             'projects' => $projects
@@ -54,7 +56,7 @@ class TaskController extends Controller
     public function edit(): void
     {
         $this->view('tasks/edit', [
-            'task' => $this->service()->find($this->request()->input('id')),
+            'task' => $this->service()->find($this->request()->input('id'), $this->auth()->user()->id()),
             'projects' => $this->projectService()->all()
         ]);
     }
@@ -89,26 +91,25 @@ class TaskController extends Controller
 
         $this->service()->update($this->request()->input('id'), $data);
 
-        $this->redirect('/?project=' . $this->service()->find($this->request()->input('id'))->projectId());
-
+        $this->redirect('/?project=' . $this->service()->find($this->request()->input('id'), $this->auth()->user()->id())->projectId());
     }
 
     public function done(): void
     {
         $this->service()->update($this->request()->input('id'), ['status' => 1]);
-        $this->redirect('/?project=' . $this->service()->find($this->request()->input('id'))->projectId());
+        $this->redirect('/?project=' . $this->service()->find($this->request()->input('id'), $this->auth()->user()->id())->projectId());
     }
 
     public function undone(): void
     {
         $this->service()->update($this->request()->input('id'), ['status' => 0]);
-        $this->redirect('/?project=' . $this->service()->find($this->request()->input('id'))->projectId());
+        $this->redirect('/?project=' . $this->service()->find($this->request()->input('id'), $this->auth()->user()->id())->projectId());
 
     }
 
     public function destroy(): void
     {
-        $projectId = $this->service()->find($this->request()->input('id'))->projectId();
+        $projectId = $this->service()->find($this->request()->input('id'), $this->auth()->user()->id())->projectId();
 
         $this->service()->delete($this->request()->input('id'));
 
