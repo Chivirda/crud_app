@@ -36,7 +36,7 @@
             <!-- Поиск -->
             <div class="row mb-3">
                 <div class="col-md-8">
-                    <form method="GET" action="/search">
+                    <form method="POST" action="/">
                         <div class="input-group">
                             <input type="text" class="form-control" name="search" placeholder="Поиск задачи...">
                             <button class="btn btn-outline-secondary" type="submit">

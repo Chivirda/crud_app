@@ -19,7 +19,7 @@ class Database implements DatabaseInterface
         $where = '';
 
         if (!empty($conditions)) {
-            $where = 'WHERE ' . implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
+            $where = 'WHERE ' . implode(' AND ', array_map(fn($field) => "$field = :$field", array_keys($conditions)));
         }
 
         $sql = "SELECT * FROM $table $where LIMIT 1";
@@ -37,7 +37,7 @@ class Database implements DatabaseInterface
         $where = '';
 
         if (!empty($conditions)) {
-            $where = 'WHERE ' . implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
+            $where = 'WHERE ' . implode(' AND ', array_map(fn($field) => "$field = :$field", array_keys($conditions)));
         }
 
         $sql = "SELECT * FROM $table $where";
@@ -50,10 +50,50 @@ class Database implements DatabaseInterface
         return $result ?? [];
     }
 
+    public function fulltextSearch(string $table, string|array $columns, string $searchTerm, array $conditions = [], array $join = [], string $order = '', array $select = ['*']): array
+    {
+        $searchColumns = is_array($columns) ? implode(', ', $columns) : $columns;
+
+        $selectFields = implode(', ', $select);
+
+        $sql = "SELECT $selectFields FROM $table";
+
+        if (!empty($join)) {
+            foreach ($join as $j) {
+                $sql .= "{$j['type']} JOIN {$j['table']} ON {$j['on']}";
+            }
+        }
+
+        $where = [];
+        $params = [':search_term' => $searchTerm];
+
+        $where[] = "MATCH($searchColumns) AGAINST(:search_term IN NATURAL LANGUAGE MODE)";
+
+        if (!empty($conditions)) {
+            foreach ($conditions as $field => $value) {
+                $where[] = "$field = :$field";
+                $params[":$field"] = $value;
+            }
+        }
+
+        if (!empty($where)) {
+            $sql .= " WHERE " . implode(' AND ', $where);
+        }
+
+        if ($order) {
+            $sql .= " ORDER BY $order";
+        }
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function insert(string $table, array $data): int|string
     {
         $fields = implode(',', array_keys($data));
-        $binds = implode(',', array_map(fn ($field) => ":$field", array_keys($data)));
+        $binds = implode(',', array_map(fn($field) => ":$field", array_keys($data)));
 
         $sql = "INSERT INTO $table ($fields) VALUES ($binds)";
         $stmt = $this->pdo->prepare($sql);
@@ -71,12 +111,12 @@ class Database implements DatabaseInterface
     {
         $fields = array_keys($data);
 
-        $set = implode(', ', array_map(fn ($field) => "$field = :$field", $fields));
+        $set = implode(', ', array_map(fn($field) => "$field = :$field", $fields));
 
         $where = '';
 
         if (!empty($conditions)) {
-            $where = 'WHERE ' . implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
+            $where = 'WHERE ' . implode(' AND ', array_map(fn($field) => "$field = :$field", array_keys($conditions)));
         }
 
         $sql = "UPDATE $table SET $set $where";
@@ -90,7 +130,7 @@ class Database implements DatabaseInterface
         $where = '';
 
         if (!empty($conditions)) {
-            $where = 'WHERE ' . implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
+            $where = 'WHERE ' . implode(' AND ', array_map(fn($field) => "$field = :$field", array_keys($conditions)));
         }
 
         $sql = "DELETE FROM $table $where";

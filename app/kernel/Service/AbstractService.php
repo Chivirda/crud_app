@@ -39,6 +39,15 @@ abstract class AbstractService
         }, $items);
     }
 
+    public function fulltextSearch(string|array $columns, string $searchTerm, array $conditions = [], array $join = [], string $order = '', array $select = ['*']) : array
+    {
+        $items = $this->db->fulltextSearch($this->tableName, $columns, $searchTerm, $conditions, $join, $order, $select);
+
+        return array_map(function ($item) {
+            return $this->createModel($item);
+        }, $items);
+    }
+
     public function find(int $id, int $userId): ?object
     {
         $item = $this->db->first($this->tableName, [

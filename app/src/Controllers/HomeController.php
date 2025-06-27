@@ -35,6 +35,16 @@ class HomeController extends Controller
         ]);
     }
 
+    public function search(): void
+    {
+        $this->view('home', [
+            'projects' => $this->projectService()->get([
+                'user_id' => $this->auth()->user()->id()
+            ]),
+            'tasks' => $this->taskService()->fulltextSearch('name', $this->request()->input('search')),
+        ]);
+    }
+
     public function today(): void
     {
         $this->view('home', [
